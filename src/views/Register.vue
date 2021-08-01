@@ -30,10 +30,6 @@ export default {
 
 <style lang="scss">
 
-body {
-    min-height: 100vh;
-}
-
 .sidebar{
     position: inherit;
     display: flex;
@@ -43,7 +39,7 @@ body {
 .background_wrapper {
     width: 65%;
     height: 100vh;
-    background-image: url(../../public/appBackground.png);
+    background-image: url(../../public/image/appBackground.png);
     opacity: 70%;
     text-align: center;
     display: inline-block;

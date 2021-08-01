@@ -11,14 +11,15 @@
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
 }
 body{
     margin: 0px;
+    min-height: 100vh;
+    background-color: #EAEAEA;
   }
 #nav {
-  // padding: 30px;
   
-
   a {
     font-weight: bold;
     color: #2c3e50;

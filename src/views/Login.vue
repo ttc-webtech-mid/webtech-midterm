@@ -12,7 +12,7 @@
               <br/>
               <a class="register_btn" href="/register">Register</a>
               <br/>
-              <a class="login_btn" href="">Login</a>
+              <a class="login_btn" href="/home">Login</a>
           </div>
       </div>
   </div>
@@ -26,10 +26,6 @@ export default {
 
 <style lang="scss">
 
-body {
-    min-height: 100vh;
-}
-
 .sidebar{
     position: inherit;
     display: flex;
@@ -39,7 +35,7 @@ body {
 .background_wrapper {
     width: 65%;
     height: 100vh;
-    background-image: url(../../public/appBackground.png);
+    background-image: url(../../public/image/appBackground.png);
     opacity: 70%;
     text-align: center;
     display: inline-block;
@@ -74,7 +70,6 @@ body {
         font-size: 3rem;
         display: inline-block;
         margin: 50px;
-        // margin-bottom: 15px;
         }
         input{
             background: #FFFFFF;
@@ -91,7 +86,7 @@ body {
             color: red;
         }
         a{
-            margin-top: 5px;
+            margin-top: 0px;
         }
         .register_btn{
             color: black;
