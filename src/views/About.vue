@@ -67,8 +67,7 @@ export default {
 .profile_wrapper{
   display: block;
   background-color: #fff;
-  float: right;
-  margin:70px 25% 20px 40%;
+  margin:70px  auto ;
   width: 800px;
   height: 400px;
   display: flex;

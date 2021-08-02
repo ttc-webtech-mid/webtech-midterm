@@ -5,7 +5,7 @@ import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import LeaderBoard from '../views/LeaderBoard.vue'
 import Store from '../views/Store.vue'
-import Setting from '../views/Setting.vue'
+import Profile from '../views/Profile.vue'
 import About from '../views/About.vue'
 
 
@@ -38,9 +38,9 @@ const routes = [
     component: Store
   },
   {
-    path: '/setting',
-    name: 'Setting',
-    component: Setting
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   },
   {
     path: '/about',

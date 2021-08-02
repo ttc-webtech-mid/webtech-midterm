@@ -2,9 +2,9 @@
     <div class="header_wrapper">
         <p>KANBONG KANBAN</p>
         <a class="logout_btn" href="/"><span>Logout</span></a>
-        <a class="profile_btn" href="">
+        <a class="profile_btn" href="/profile">
             <div class="img_wrapper">
-                <img src="../../public/image/User_img.png" >
+                <img src="../../public/image/icon/profile_ico.png" >
             </div>
             <span>User: Firstname Lastname</span>
         </a>
@@ -37,7 +37,7 @@ export default {
         float: right;
         .img_wrapper{
             width: 19%;
-            height: 63%;
+            height: 67%;
             border-radius: 100%;
             overflow: hidden;
             float: left;

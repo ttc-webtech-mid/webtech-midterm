@@ -56,16 +56,16 @@
           
       </div>
       <div class="bottom">
-          <div v-if="page==='Setting'">
-            <a class="selected_page" href="/setting">
-                <img src="../../public/image/icon/setting_ico.png">
-                <span>Setting</span>
+          <div v-if="page==='Profile'">
+            <a class="selected_page" href="/profile">
+                <img src="../../public/image/icon/profile_ico.png">
+                <span>Profile</span>
             </a>
           </div>
-          <div v-if="page!=='Setting'">
-            <a class="not_selected_page" href="/setting">
-                <img src="../../public/image/icon/setting_ico.png">
-                <span>Setting</span>
+          <div v-if="page!=='Profile'">
+            <a class="not_selected_page" href="/profile">
+                <img src="../../public/image/icon/profile_ico.png">
+                <span>Profile</span>
             </a>
           </div>
           
