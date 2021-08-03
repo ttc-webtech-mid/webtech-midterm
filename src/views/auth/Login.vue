@@ -44,6 +44,13 @@ export default {
             }
             else {
                 this.$swal("Login Failed", res.message, "error")
+                this.clearForm()
+            }
+        },
+        clearForm() {
+            this.form = {
+                username: "",
+                password: ""
             }
         }
     }

@@ -92,8 +92,8 @@ export default {
             
     //     }
     // },
-    // logout() {
-    //     localStorage.removeItem(auth_key)
-    // }
+    logout() {
+        localStorage.removeItem(auth_key)
+    }
 
 }

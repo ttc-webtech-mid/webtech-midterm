@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/views/auth/Login.vue'
+import Logout from '@/views/auth/Logout.vue'
 import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import LeaderBoard from '../views/LeaderBoard.vue'
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
   },
   {
     path: '/register',

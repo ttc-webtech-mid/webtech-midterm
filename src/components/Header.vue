@@ -1,7 +1,8 @@
 <template>
     <div class="header_wrapper">
         <p>KANBONG KANBAN</p>
-        <a class="logout_btn" href="/"><span>Logout</span></a>
+        <router-link to="/logout"><a class="logout_btn"><span>Logout</span></a></router-link>
+        <!-- <a class="logout_btn" href="/"><span>Logout</span></a> -->
         <a class="profile_btn" href="/profile">
             <div class="img_wrapper">
                 <img src="../../public/image/icon/profile_ico.png" >
@@ -13,8 +14,13 @@
 </template>
 
 <script>
+import AuthUser from "@/store/AuthUser"
 export default {
-
+    methods: {
+      isAuthen() {
+        return AuthUser.getters.isAuthen
+      },
+    }
 }
 </script>
 
