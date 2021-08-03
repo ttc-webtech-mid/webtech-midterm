@@ -29,7 +29,7 @@ export default {
 .sidebar{
     position: inherit;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
 }
 
 .background_wrapper {
