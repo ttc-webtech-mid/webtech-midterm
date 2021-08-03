@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
+import Login from '@/views/auth/Login.vue'
 import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import LeaderBoard from '../views/LeaderBoard.vue'

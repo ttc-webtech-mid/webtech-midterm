@@ -4,23 +4,49 @@
           <p>KANBONG KANBAN</p>
       </div>
       <div class="login_wrapper">
-          <div class="login_pad">
+          <form @submit.prevent="login">
+            <div class="login_pad">
               <p>Login</p>
-              <input type="text" placeholder="Username">
-              <input type="text" placeholder="Password">
-              <label for="">Incomplete plese try again</label>
+              <input v-model="form.username" type="text" placeholder="Username">
+              <input v-model="form.password" type="password" placeholder="Password">
+              <!-- <label for="">Incomplete plese try again</label> -->
               <br/>
               <a class="register_btn" href="/register">Register</a>
               <br/>
-              <a class="login_btn" href="/home">Login</a>
+              <div>
+                <button class="login_btn">Log In</button>
+              </div>
+              <!-- <a class="login_btn">Login</a> -->
           </div>
+          </form>
       </div>
   </div>
 </template>
 
 <script>
+import AuthUser from "@/store/AuthUser"
 export default {
-
+    data() {
+        return {
+            form: {
+                username: "",
+                password: ""
+            }
+        }
+    },
+    methods: {
+        async login() {
+            // console.log(this.form);
+            let res = await AuthUser.dispatch('login', this.form)
+            if (res.success) {
+                this.$swal("Login Sucess", `Welcome, ${res.user.username}`, "success")
+                this.$router.push('/home')
+            }
+            else {
+                this.$swal("Login Failed", res.message, "error")
+            }
+        }
+    }
 }
 </script>
 
@@ -35,7 +61,7 @@ export default {
 .background_wrapper {
     width: 65%;
     height: 100vh;
-    background-image: url(../../public/image/appBackground.png);
+    background-image: url(../../../public/image/appBackground.png);
     opacity: 70%;
     text-align: center;
     display: inline-block;
@@ -97,12 +123,14 @@ export default {
             margin: 0px auto;
             margin-top: 5px;
             padding: 10px 10px;
-            width: 45px;
+            // width: 45px;
+            width: auto;
             text-decoration: none;
             color: #FFFFFF;
             background-color: #1E6380;
             border: 1px solid #1E6380;
             border-radius: 10px;
+            cursor: pointer;
         }
 
     }
