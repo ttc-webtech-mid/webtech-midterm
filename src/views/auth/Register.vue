@@ -4,27 +4,64 @@
           <p>KANBONG KANBAN</p>
       </div>
       <div class="register_wrapper">
-          <div class="register_pad">
+          <form @submit.prevent="register">
+              <div class="register_pad">
               <p>Register</p>
-              <input type="text" placeholder="Username">
-              <input type="text" placeholder="Password">
-              <input type="text" placeholder="Confirm Password">
-              <input type="text" placeholder="Email">
-              <label for="">Incomplete plese try again</label>
+              <input v-model="form.username" type="text" placeholder="Username" autocomplete="off">
+              <input v-model="form.password" type="password" placeholder="Password" autocomplete="off">
+              <input v-model="form.confirm_password" type="password" placeholder="Confirm Password" autocomplete="off">
+              <input v-model="form.email" type="email" placeholder="Email" autocomplete="off">
+              <!-- <label for="">Incomplete plese try again</label> -->
               <br/>
               <div>
+                <button class="confirm_btn">Register</button>
+              </div>
+              <!-- <div>
                 <a class="confirm_btn" href="/">Confirm</a>
                 <a class="cancel_btn" href="/">Cancel</a>
+              </div> -->
               </div>
-              
-          </div>
+          </form>
       </div>
   </div>
 </template>
 
 <script>
+// import AuthService from "@/services/AuthService"
+import AuthUser from "@/store/AuthUser"
 export default {
-
+    data() {
+        return {
+            form: {
+                username: "",
+                password: "",
+                email: "",
+                confirm_password: ""
+            }
+        }
+    },
+    methods: {
+        async register() {
+            // let res = await AuthService.register(this.form)
+            let res = await AuthUser.dispatch('register', this.form)
+            if (res.success) {
+                this.$swal("Register success", ``, "success")
+                this.$router.push('/')                
+            }
+            else {
+                this.$swal("Register failed", res.message, "error")
+            }
+            this.clearForm()
+        },
+        clearForm() {
+            this.form = {
+                username: "",
+                password: "",
+                email: "",
+                confirm_password: ""
+            }
+        }
+    }
 }
 </script>
 
@@ -39,7 +76,7 @@ export default {
 .background_wrapper {
     width: 65%;
     height: 100vh;
-    background-image: url(../../public/image/appBackground.png);
+    background-image: url(../../../public/image/appBackground.png);
     opacity: 70%;
     text-align: center;
     display: inline-block;
