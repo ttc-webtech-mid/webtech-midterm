@@ -12,34 +12,34 @@
                         <span id="teacher_name">TeacherName TeacherSurname</span>
                         <span id="teacher_email">teacher@ku.th</span>
                     </div>
-                    <a class="add_task" href="">
-                        <img src="../../public/image/icon/add_ico.png" alt="">
+                    <a class="add_task" href="/class/task">
+                        <img src="../../public/image/icon/add_ico.png">
                         <span>Add somthing task to your class</span>
                     </a>
                 </div>
-                 <a class="task_detail" href="">
-                    <img src="../../public/image/icon/task_ico.png" alt="">
+                 <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
                     <div>
                         <span id="heading">Heading Task 1</span>
                         <span id="date">00/00/00</span>
                     </div>
                 </a>
-                <a class="task_detail" href="">
-                    <img src="../../public/image/icon/task_ico.png" alt="">
+                <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
                     <div>
                         <span id="heading">Heading Task 2</span>
                         <span id="date">00/00/00</span>
                     </div>
                 </a>
-                <a class="task_detail" href="">
-                    <img src="../../public/image/icon/task_ico.png" alt="">
+                <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
                     <div>
                         <span id="heading">Heading Task 3</span>
                         <span id="date">00/00/00</span>
                     </div>
                 </a>
-                <a class="task_detail" href="">
-                    <img src="../../public/image/icon/task_ico.png" alt="">
+                <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
                     <div>
                         <span id="heading">Heading Task 4</span>
                         <span id="date">00/00/00</span>
@@ -74,7 +74,7 @@ components:{
       display: block;
       overflow: scroll;
         .page_wrapper{
-            width: 95%;
+            width: 1369.88px;
             height: 89.5%;
             background-color: #fff;
             margin:45px auto;
@@ -163,6 +163,9 @@ components:{
                         color: #8D8D8D;
                     }
                 }
+            }
+            .task_detail:hover{
+                border:4px solid #327997;
             }
         }
     }

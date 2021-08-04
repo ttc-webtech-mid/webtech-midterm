@@ -8,6 +8,7 @@ import Store from '../views/Store.vue'
 import Profile from '../views/Profile.vue'
 import About from '../views/About.vue'
 import Class from '../views/Class.vue'
+import Task from '../views/Task.vue'
 
 
 Vue.use(VueRouter)
@@ -52,6 +53,11 @@ const routes = [
     path: '/class',
     name: 'Class',
     component: Class
+  },
+  {
+    path: '/class/task',
+    name: 'task',
+    component: Task
   },
 ]
 
