@@ -7,6 +7,7 @@ import LeaderBoard from '../views/LeaderBoard.vue'
 import Store from '../views/Store.vue'
 import Profile from '../views/Profile.vue'
 import About from '../views/About.vue'
+import Class from '../views/Class.vue'
 
 
 Vue.use(VueRouter)
@@ -46,6 +47,11 @@ const routes = [
     path: '/about',
     name: 'About',
     component: About
+  },
+  {
+    path: '/class',
+    name: 'Class',
+    component: Class
   },
 ]
 

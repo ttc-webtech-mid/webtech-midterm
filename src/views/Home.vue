@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 .content_wrapper{
     width:100%;

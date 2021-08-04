@@ -14,16 +14,16 @@
               </a>
           </div>
           
-          <div v-if="page==='Content'">
-              <a class="selected_page" href="">
-                <img src="../../public/image/icon/content_ico.png">
-                <span>Content</span>
+          <div v-if="page==='Class'">
+              <a class="selected_page" href="/class">
+                <img src="../../public/image/icon/class_ico.png">
+                <span>Class</span>
               </a>
           </div>
-          <div v-if="page!=='Content'">
-              <a class="not_selected_page" href="">
-                <img src="../../public/image/icon/content_ico.png">
-                <span>Content</span>
+          <div v-if="page!=='Class'">
+              <a class="not_selected_page" href="/class">
+                <img src="../../public/image/icon/class_ico.png">
+                <span>Class</span>
               </a>
           </div>
           
