@@ -40,8 +40,8 @@
                 <div class="submit_wrapper">
                     <div class="submit_top_wrapper">
                         <span id="your_work">Your work</span>
-                        <a href="">Assigned</a>
-                        <!-- <a href="" style="background: #2BB863">Turned in</a> -->
+                        <div>Assigned</div>
+                        <!-- <div href="" style="background: #2BB863">Turned in</div> -->
                         <br>
                         <span id="due">Due: 00/00/0000</span>
                     </div>
@@ -152,7 +152,7 @@ components:{
                         margin-left: 25px;
                         color: #8D8D8D;
                     }
-                    a{
+                    div{
                         display: block;
                         float: right;
                         color: #fff;
