@@ -7,10 +7,10 @@
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  background-color: #EAEAEA;
 }
 body{
     margin: 0px;
-    background-color: #EAEAEA;
   }
 #nav {
   a {

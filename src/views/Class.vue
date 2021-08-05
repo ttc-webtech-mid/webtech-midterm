@@ -12,10 +12,20 @@
                         <span id="teacher_name">TeacherName TeacherSurname</span>
                         <span id="teacher_email">teacher@ku.th</span>
                     </div>
-                    <a class="add_task" href="/class/task">
-                        <img src="../../public/image/icon/add_ico.png">
-                        <span>Add somthing task to your class</span>
-                    </a>
+                    <div>
+                            <b-button class="add_task" v-b-modal.modal-xl variant="primary"><img src="../../public/image/icon/add_ico.png">Add somthing task to your class</b-button>
+                            <b-modal id="modal-xl" size="xl" title="Add task">
+                                <form action="">
+                                    <span>Details</span>
+                                    <div id="due">
+                                        Due:
+                                        <input type="date">
+                                    </div> 
+                                    <br>
+                                    <textarea name="details" id="details"></textarea>
+                                </form>
+                                </b-modal>
+                        </div>
                 </div>
                  <a class="task_detail" href="/class/task">
                     <img src="../../public/image/icon/task_ico.png">
@@ -84,6 +94,7 @@ components:{
                 background-color: #327997;
                 border-radius: 0px 0px 15px 15px;
                 filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
                 img{
                     float: left;
                     width: 130px;
@@ -118,9 +129,13 @@ components:{
                     float: right;
                     color: #fff;
                     text-decoration: none;
-                    height: 20px;
+                    height: 25px;
                     display: flex;
+                    padding: 0px;
                     margin: 140px 20px 0px 0px;
+                    background-color: #327997;
+                    border: 0px;
+                    
                     img{
                         width: 20px;
                         height: 20px;
@@ -169,5 +184,25 @@ components:{
             }
         }
     }
+}                
+#modal-xl {
+    span{
+    font-size: 1.2rem;
+    }
+    #due{
+        float: right;
+        border: 1px solid #A1A1A1;
+        border-radius: 5px;
+        input{
+            border: 0px;
+        }
+    }
+    #details{
+        border-radius: 5px;
+        margin-top: 20px;
+        width: 1108px;
+        height: 300px;
+    }
 }
+
 </style>

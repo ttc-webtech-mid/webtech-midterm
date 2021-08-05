@@ -45,7 +45,7 @@ export default {
     display: inline-block;
     overflow-x: hidden;
     p{
-        height: 180px;
+        height: 255px;
         padding: 10px 0px;
         border-radius: 5%;
         display: inline-block;
@@ -53,7 +53,7 @@ export default {
         font-weight: bold;
         margin-top: 350px;
         color: #FFFFFF;
-        background-color: #1E6380;
+        background-color: #12475e;
         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         width: 30rem;
     }
@@ -105,7 +105,6 @@ export default {
             margin: 0px 10px;
             margin-top: 5px;
             padding: 10px 10px;
-            width: 55px;
             text-decoration: none;
             color: #FFFFFF;
             background-color: #1E6380;

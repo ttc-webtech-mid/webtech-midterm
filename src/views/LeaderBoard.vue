@@ -75,12 +75,19 @@ export default {
             background-color: #327997;
             color: #fff;
             height: 50px;
+            text-align: center;
             
-            #rank_head, #points_head{
+            #rank_head{
                 width: 150px;
+                border-right: 2px solid #ffffff;
+            } 
+            #points_head{
+                width: 150px;
+                border-left: 2px solid #ffffff;
             }
             #name_head{
                 width: 700px;
+                
             }
         }
         tbody{
@@ -88,11 +95,16 @@ export default {
                 height: 50px;
               }
             
-            #rank_body,#points_body{
-                
+            #rank_body{
+                text-align:center;
+                // border-right: 2px solid #000000;
+            }
+            #points_body{
+                // border-left: 2px solid #000000;
                 text-align:center;
             }
             #name_body{
+                
                 display: block;
                 margin:20px 20px;
             }
