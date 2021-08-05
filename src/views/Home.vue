@@ -1,6 +1,6 @@
 <template>
   <div>
-      <Header></Header>
+    <Header></Header>
       <div class="content_wrapper">
         <Sidebar page="Home"></Sidebar>
         <div class="content_pad">
@@ -39,16 +39,33 @@
         </div>
       </div>
   </div>
+        <course-list></course-list>
+    </div>
+    </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import axios from 'axios'
+import CourseList from '../components/CourseList.vue'
+
+let url = process.env.VUE_APP_API_ENDPOINT
 
 export default {
     components:{
         Header,
         Sidebar,
+        CourseList,
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            let res = await axios.get(url + '/students?std_id=6210450016')
+            this.students = res.data
+        }
     },
 }
 </script>

@@ -10,7 +10,7 @@
                         <img src="../../public/image/icon/profile_ico.png">
                     </div>
                     <div class="top_detail_wrapper">
-                        <span id="username">User: Firstname Lastname</span>
+                        <span id="username">User: {{ `${student[0].firstname} ${student[0].lastname}` }}</span>
                         <br>
                         <span id="email">abc@ku.th</span>
                     </div>
@@ -28,17 +28,11 @@
                     <div class="right_detail_wrapper">
                         <span id="classes">Classes</span>
                         <div class="classes_pad">
-                            <div class="class">
-                                <img src="../../public/image/cal_sbj.png">
-                                <span>Cal</span>
-                            </div>
-                            <div class="class">
-                                <img src="../../public/image/science_sbj.png">
-                                <span>Science</span>
-                            </div>
-                            <div class="class">
-                                <img src="../../public/image/com_sbj.png">
-                                <span>Computer</span>
+                            <div v-for="(course, index) in courses" :key="index">
+                                <div class="class">
+                                    <img src="../../public/image/science_sbj.png">
+                                    <span>{{ course.course_name}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,12 +46,33 @@
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import StudentStore from '@/store/StudentStore'
 
+// isLoading
 export default {
-
     components:{
         Header,
         Sidebar
+    },
+    data() {
+        return {
+            student: [{
+                firstname: '',
+                lastname: ''
+            }],
+            courses: []
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            await StudentStore.dispatch('fetchStudent')
+            await StudentStore.dispatch('fetchCourses')
+            this.student = StudentStore.getters.getStudent
+            this.courses = StudentStore.getters.getCourses
+        }
     }
 }
 </script>
