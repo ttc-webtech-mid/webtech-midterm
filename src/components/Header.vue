@@ -6,15 +6,35 @@
             <div class="img_wrapper">
                 <img src="../../public/image/icon/profile_ico.png" >
             </div>
-            <span>User: Firstname Lastname</span>
+            <span>{{ `${student[0].firstname} ${student[0].lastname}` }}</span>
         </a>
  
     </div>
 </template>
 
 <script>
-export default {
+import StudentStore from '@/store/StudentStore'
 
+// isLoading component
+export default {
+    data() {
+        return {
+            student: [{
+                firstname: '',
+                lastname: ''
+            }]
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            await StudentStore.dispatch('fetchStudent')
+            let student = StudentStore.getters.getStudent
+            this.student = student
+        }
+    }
 }
 </script>
 

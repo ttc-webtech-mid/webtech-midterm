@@ -14,27 +14,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <tr>
-                                    <td id="rank_body">1</td>
-                                    <td id="name_body">Firstname Lastname</td>
-                                    <td id="points_body">100</td>
-                                </tr>
-                                <tr>
-                                    <td id="rank_body">2</td>
-                                    <td id="name_body">Firstname Lastname</td>
-                                    <td id="points_body">80</td>
-                                </tr>
-                                <tr>
-                                    <td id="rank_body">3</td>
-                                    <td id="name_body">Firstname Lastname</td>
-                                    <td id="points_body">60</td>
-                                </tr>
-                                <tr>
-                                    <td id="rank_body">4</td>
-                                    <td id="name_body">Firstname Lastname</td>
-                                    <td id="points_body">50</td>
-                                </tr>
-                                
+                            <tr v-for="(std, index) in students" :key="index">
+                                <td id="rank_body"> {{ index + 1 }} </td>
+                                <td id="name_body"> {{ `${std.firstname} ${std.lastname}` }} </td>
+                                <td id="points_body">{{ `${std.scores}` }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -46,12 +30,27 @@
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import LeaderBoardStore from '@/store/LeaderBoardStore'
 
 export default {
-
     components:{
         Header,
         Sidebar
+    },
+    data() {
+        return {
+            students: []
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            await LeaderBoardStore.dispatch('fetchStudents')
+            let student = LeaderBoardStore.getters.getStudents
+            this.students = student
+        }
     }
 }
 </script>
