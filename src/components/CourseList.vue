@@ -1,7 +1,7 @@
 <template>
   <div class="content_pad">
       <div v-for="(course, index) in courses" :key="index">
-            <a href="/class">
+            <a :href="'/class/' + course.course_id">
                 <div class="top_button">
                     <img src="../../public/image/cal_sbj.png">
                     <span id="subject">{{ course.course_name }}</span>
