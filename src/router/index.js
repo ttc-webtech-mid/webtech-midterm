@@ -50,12 +50,12 @@ const routes = [
     component: About
   },
   {
-    path: '/class',
+    path: '/class/:id',
     name: 'Class',
     component: Class
   },
   {
-    path: '/class/task',
+    path: '/class/:id/:task_id',
     name: 'task',
     component: Task
   },
