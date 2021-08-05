@@ -53,12 +53,16 @@
                                 <span id="special_text">&#8226;</span>
                                 <span>yourwork</span>
                             </a>
-                            <a href="">
-                                <img src="../../public/image/icon/add_task_ico.png">
-                                <span>Add your work</span> 
-                             </a>
+
+                            <!--<input type="file" id="insertFile" name="insertFile" multiple> -->
+                            <div class="button-wrap">
+                                <label class="button" for="upload">
+                                    <img src="../../public/image/icon/add_task_ico.png">
+                                    Upload File</label>
+                                <input id="upload" type="file" multiple>
+                            </div>
                         </div> 
-                        <a id="submit" style="background-color: #2F72B0" href="">Submit</a>
+                        <input type="submit" id="submit" style="background-color: #2F72B0" href="">
                         <!-- <a id="submit" style="background-color: #CE2828; margin-right: 110px" href="">unsubmit</a> -->
                     </div>
                 </div>
@@ -204,11 +208,43 @@ components:{
                         height: 350px;
                         margin:15px auto;
                         overflow-y: scroll;
+                        overflow-x: hidden ;
                         #special_text{
                             float: left;
                             display: block;
                             margin: 0px 8px 0px 7px;
                         }
+                        input[type="file"] {
+                            position: absolute;
+                            z-index: -1;
+                            top: 10px;
+                            left: 8px;
+                            font-size: 17px;
+                            color: #b8b8b8;
+                        }
+                        .button-wrap {
+                            position: relative;
+                        }
+                        .button {
+                            display: inline-block;
+                            cursor: pointer;
+                            border-radius: 5px;
+                            background-color: #fff;
+                            font-size: 16px;
+                            font-weight: bold;
+                            color: #3C89CF;
+                            margin-top: 10px;
+                            img{
+                                float: left;
+                                width: 20px;
+                                height: 20px;
+                                margin: 1px 4px 0px 0px;
+                            }
+                        }
+                        .button:hover{
+                            color: #46729c;
+                        }
+
                         a{
                             display: block;
                             color: #3C89CF;
@@ -230,10 +266,9 @@ components:{
                         float: right;
                         color: #fff;
                         text-decoration: none;
-                        padding: 5px 10px;
+                        padding: 0px 10px;
                         margin:0px 115px 0px 0px;
                         border-radius: 10px;
-                        
                     }
                 }
             }

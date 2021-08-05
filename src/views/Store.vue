@@ -88,9 +88,12 @@ export default {
                 width: 150px;
                 height: 100%;
                 background-color: #327997;
-                border:0px solid #327997;
+                border:0px;
                 border-radius:0px 10px 10px 0px;
                 cursor: pointer;
+            }
+            button:hover{
+                background-color: #2f6780;
             }
       }
     }
