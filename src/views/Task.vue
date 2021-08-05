@@ -54,7 +54,6 @@
                                 <span>yourwork</span>
                             </a>
 
-                            <!--<input type="file" id="insertFile" name="insertFile" multiple> -->
                             <div class="button-wrap">
                                 <label class="button" for="upload">
                                     <img src="../../public/image/icon/add_task_ico.png">
