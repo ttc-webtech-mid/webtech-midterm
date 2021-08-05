@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-let baseURL = process.env.VUE_APP_API_ENDPOINT
+let baseURL = process.env.VUE_APP_API_ENDPOINT || "http://localhost:1337"
 
 Vue.use(Vuex)
 
