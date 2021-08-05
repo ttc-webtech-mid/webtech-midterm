@@ -37,6 +37,8 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- ของ role ที่เป็นนิสิต -->
                 <div class="submit_wrapper">
                     <div class="submit_top_wrapper">
                         <span id="your_work">Your work</span>
@@ -55,11 +57,39 @@
                                 <img src="../../public/image/icon/add_task_ico.png">
                                 <span>Add your work</span> 
                              </a>
-                        </div>
+                        </div> 
                         <a id="submit" style="background-color: #2F72B0" href="">Submit</a>
                         <!-- <a id="submit" style="background-color: #CE2828; margin-right: 110px" href="">unsubmit</a> -->
                     </div>
                 </div>
+
+                <!-- ของ role ที่เป็นอาจารย์ -->
+                <!-- <div class="submit_wrapper">
+                    <div class="submit_top_wrapper">
+                        <span id="your_work">Turned in list</span>
+                        
+                        <br>
+                        <span id="due">Due: 00/00/0000</span>
+                    </div>
+                    <div class="submit_bottom_wrapper">
+                        <div class="work_pad">
+                            <a href="">
+                                <span id="special_text">&#8226;</span>
+                                <span>6210450016's work</span>
+                            </a>
+                            <a href="">
+                                <span id="special_text">&#8226;</span>
+                                <span>6210400710's work</span>
+                            </a>
+                            <a href="">
+                                <span id="special_text">&#8226;</span>
+                                <span>6210401252's work</span>
+                            </a>
+                        </div> 
+                    </div>
+                </div> -->
+
+
             </div>
         </div>
       </div>
@@ -182,7 +212,7 @@ components:{
                         a{
                             display: block;
                             color: #3C89CF;
-                            width: 131px;
+                            // width: 131px;
                             height: 25px;
                             margin-top: 10px;
                             img{
@@ -190,6 +220,9 @@ components:{
                                 width: 20px;
                                 height: 20px;
                             }
+                        }
+                        a:hover{
+                            color: #46729c;
                         }
                     }
                     #submit{

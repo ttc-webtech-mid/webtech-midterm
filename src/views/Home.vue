@@ -4,7 +4,7 @@
       <div class="content_wrapper">
         <Sidebar page="Home"></Sidebar>
         <div class="content_pad">
-            <a href="">
+            <a href="/class">
                 <div class="top_button">
                     <img src="../../public/image/cal_sbj.png">
                     <span id="subject">Cal</span>
@@ -49,7 +49,7 @@ export default {
 
     components:{
         Header,
-        Sidebar
+        Sidebar,
     }
 }
 </script>

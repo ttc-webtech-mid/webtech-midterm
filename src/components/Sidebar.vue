@@ -14,7 +14,7 @@
               </a>
           </div>
           
-          <div v-if="page==='Class'">
+          <!-- <div v-if="page==='Class'">
               <a class="selected_page" href="/class">
                 <img src="../../public/image/icon/class_ico.png">
                 <span>Class</span>
@@ -25,7 +25,7 @@
                 <img src="../../public/image/icon/class_ico.png">
                 <span>Class</span>
               </a>
-          </div>
+          </div> -->
           
           <div v-if="page==='Leader Board'">
               <a class="selected_page" href="/leader_Board">

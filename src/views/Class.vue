@@ -12,20 +12,24 @@
                         <span id="teacher_name">TeacherName TeacherSurname</span>
                         <span id="teacher_email">teacher@ku.th</span>
                     </div>
+
+                    <!-- div นี้เอาออกถ้ามี role เป็นนักเรียน -->
                     <div>
-                            <b-button class="add_task" v-b-modal.modal-xl variant="primary"><img src="../../public/image/icon/add_ico.png">Add somthing task to your class</b-button>
-                            <b-modal id="modal-xl" size="xl" title="Add task">
-                                <form action="">
-                                    <span>Details</span>
-                                    <div id="due">
-                                        Due:
-                                        <input type="date">
-                                    </div> 
-                                    <br>
-                                    <textarea name="details" id="details"></textarea>
-                                </form>
-                                </b-modal>
-                        </div>
+                        <b-button class="add_task" v-b-modal.modal-xl variant="primary"><img src="../../public/image/icon/add_ico.png">Add somthing task to your class</b-button>
+                        <b-modal id="modal-xl" size="xl" title="Add task">
+                            <form action="">
+                                <span>Details</span>
+                                <div id="due">
+                                    Due:
+                                    <input type="date">
+                                </div> 
+                                <br>
+                                <textarea name="details" id="details"></textarea>
+                            </form>
+                            </b-modal>
+                    </div>
+
+
                 </div>
                  <a class="task_detail" href="/class/task">
                     <img src="../../public/image/icon/task_ico.png">
@@ -144,6 +148,9 @@ components:{
                     span{
                         margin: 2px 0px 0px 5px;
                     }
+                }
+                .add_task:hover{
+                    color: #b1d6e6;
                 }
             }
             .task_detail{
