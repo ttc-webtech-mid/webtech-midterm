@@ -44,24 +44,11 @@
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
-import CourseList from '@/components/CourseList'
-import axios from 'axios'
-
-let url = process.env.VUE_APP_API_ENDPOINT
 
 export default {
     components:{
         Header,
         Sidebar,
-    },
-    created() {
-        this.fetchData()
-    },
-    methods: {
-        async fetchData() {
-            let res = await axios.get(url + '/students?std_id=6210450016')
-            this.students = res.data
-        }
     },
 }
 </script>

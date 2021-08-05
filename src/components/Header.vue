@@ -6,31 +6,15 @@
             <div class="img_wrapper">
                 <img src="../../public/image/icon/profile_ico.png" >
             </div>
-            <span>User: {{ `${this.students[0].firstname} ${this.students[0].lastname}` }}</span>
+            <span>User: {{ `Firstname Lastname` }}</span>
         </a>
  
     </div>
 </template>
 
 <script>
-import axios from 'axios'
 
-let url = process.env.VUE_APP_API_ENDPOINT
 export default {
-    data() {
-        return {
-            students: []
-        }
-    },
-    created() {
-        this.fetchData()
-    },
-    methods: {
-        async fetchData() {
-            let res = await axios.get(url + '/students?std_id=6210450016')
-            this.students = res.data
-        }
-    },
 }
 </script>
 
