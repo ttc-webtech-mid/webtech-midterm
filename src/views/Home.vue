@@ -44,13 +44,25 @@
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import CourseList from '@/components/CourseList'
+import axios from 'axios'
+
+let url = process.env.VUE_APP_API_ENDPOINT
 
 export default {
-
     components:{
         Header,
         Sidebar,
-    }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            let res = await axios.get(url + '/students?std_id=6210450016')
+            this.students = res.data
+        }
+    },
 }
 </script>
 
@@ -88,27 +100,6 @@ export default {
                 margin: 85px 0px 0px 30px;
             }
         }
-        .bottom_button{
-            height: 50%;
-            background-color: #fff;
-            border-radius: 0px 0px 15px 15px;
-            color: #000000;
-            #teacher_name{
-                width: 590px;
-                display: inline-block;
-                margin: 55px 0px 0px 405px;
-                font-size: 2.5rem;
-            }
-            #teacher_email{
-                display: block;
-                margin: 20px 0px 0px 413px;
-                color: #787878;
-            }
-        }
-    
-      }
-      a:hover{
-          border:4px solid #327997;
       }
     }
 }
