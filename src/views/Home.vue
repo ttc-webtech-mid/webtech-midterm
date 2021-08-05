@@ -4,69 +4,23 @@
       <div class="content_wrapper">
         <Sidebar page="Home"></Sidebar>
         <div class="content_pad">
-            <a href="/class">
-                <div class="top_button">
-                    <img src="../../public/image/cal_sbj.png">
-                    <span id="subject">Cal</span>
-                </div>
-                <div class="bottom_button">
-                    <span id="teacher_name">TeacherName TeacherLastname</span>
-                    <span id="teacher_email">Teacher@ku.th</span>
-                </div>
-            </a>
-
-            <a href="">
-                <div class="top_button">
-                    <img src="../../public/image/science_sbj.png">
-                    <span id="subject">Science</span>
-                </div>
-                <div class="bottom_button">
-                    <span id="teacher_name">TeacherName TeacherLastname</span>
-                    <span id="teacher_email">Teacher@ku.th</span>
-                </div>
-            </a>
-
-            <a href="">
-                <div class="top_button">
-                    <img src="../../public/image/com_sbj.png">
-                    <span id="subject">Computer</span>
-                </div>
-                <div class="bottom_button">
-                    <span id="teacher_name">TeacherName TeacherLastname</span>
-                    <span id="teacher_email">Teacher@ku.th</span>
-                </div>
-            </a>
+        <course-list></course-list>
         </div>
       </div>
   </div>
-        <course-list></course-list>
-    </div>
-    </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
-import axios from 'axios'
 import CourseList from '../components/CourseList.vue'
-
-let url = process.env.VUE_APP_API_ENDPOINT
 
 export default {
     components:{
         Header,
         Sidebar,
         CourseList,
-    },
-    created() {
-        this.fetchData()
-    },
-    methods: {
-        async fetchData() {
-            let res = await axios.get(url + '/students?std_id=6210450016')
-            this.students = res.data
-        }
-    },
+    }
 }
 </script>
 
