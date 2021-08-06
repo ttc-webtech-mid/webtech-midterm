@@ -50,6 +50,11 @@ import StudentStore from '@/store/StudentStore'
 
 // isLoading
 export default {
+    data() {
+        return {
+            
+        }
+    },
     components:{
         Header,
         Sidebar
