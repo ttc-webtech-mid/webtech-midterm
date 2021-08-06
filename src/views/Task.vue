@@ -8,32 +8,15 @@
                 <div class="head_wrapper">
                     <img src="../../public/image/icon/task_ico.png">
                     <div class="head_text">
-                        <span id="heading">Heading Task</span>
-                        <span id="date">00/00/0000</span>
+                        <span id="heading">{{ task.topic }}</span>
+                        <span id="date">{{ task.created_at }}</span>
                     </div>
                 </div>
                 <div class="task_wrapper">
-                    <span id="details">Details</span>
+                    <span id="details">รายละเอียด</span>
                     <div class="details_wrapper">
                         <p>
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-                            -----------------------------------------details-----------------------------------------
-
+                            {{ task.detail }}
                         </p>
                     </div>
                 </div>
@@ -45,25 +28,43 @@
                         <div>Assigned</div>
                         <!-- <div href="" style="background: #2BB863">Turned in</div> -->
                         <br>
-                        <span id="due">Due: 00/00/0000</span>
+                        <span id="due">Due: {{ task.due_date }}</span>
                     </div>
+                    <form @submit.prevent="upload" ref="uploadForm">
                     <div class="submit_bottom_wrapper">
                         <div class="work_pad">
-                            <a href="">
-                                <span id="special_text">&#8226;</span>
-                                <span>yourwork</span>
-                            </a>
+                                <div v-if="uploadedFiles.length === 0">
+                                    <div v-for="(file, index) in files" :key="index">
+                                            <a href="">
+                                                <span id="special_text">&#8226;</span>
+                                                <span>{{ file.name }}</span>
+                                            </a>
+                                            <button @click="remove(index)"> x </button>
+                                    </div>
+                                </div>
 
+                                <div v-if="uploadedFiles.length > 0">
+                                    <div v-for="(file, index) in uploadedFiles" :key="index">
+                                            <a href="">
+                                                <span id="special_text">&#8226;</span>
+                                                <span>{{ file.name }}</span>
+                                            </a>
+                                            <button @click="remove(index)"> x </button>
+                                    </div>
+                                </div>
+                                
                             <div class="button-wrap">
                                 <label class="button" for="upload">
                                     <img src="../../public/image/icon/add_task_ico.png">
                                     Upload File</label>
-                                <input id="upload" type="file" multiple>
+                                <input id="upload" type="file" name="files" multiple @change="onFileChange">
                             </div>
                         </div> 
-                        <input type="submit" id="submit" style="background-color: #2F72B0" href="">
+                        <input v-if="files.length === 0" type="submit" id="submit" style="background-color: grey" href="" disabled>
+                        <input v-if="files.length > 0" type="submit" id="submit" style="background-color: #2F72B0" href="">
                         <!-- <a id="submit" style="background-color: #CE2828; margin-right: 110px" href="">unsubmit</a> -->
                     </div>
+                    </form>
                 </div>
 
                 <!-- ของ role ที่เป็นอาจารย์ -->
@@ -102,13 +103,57 @@
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import AssignmentStore from "@/store/AssignmentStore"
+import axios from 'axios'
 
 export default {
 
-components:{
-    Header,
-    Sidebar,
-},
+    components:{
+        Header,
+        Sidebar,
+    },
+    data() {
+        return {
+            task_id: this.$route.params.task_id,
+            task: [],
+            files: [],
+            isSubmit: false,
+            uploadedFiles: []
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData(){
+            await AssignmentStore.dispatch("fetchAssignmentById", this.task_id)
+            this.task = AssignmentStore.getters.getFilterAssignment[0]
+
+            AssignmentStore.dispatch("fetchUploadedFiles")
+            this.uploadedFiles = AssignmentStore.getters.getUploadedFiles[0]['files']
+            console.log(this.uploadedFiles)
+            console.log(this.task)
+        },
+        onFileChange(event) {
+            for(let file of event.target.files) {
+                console.log(file)
+                this.files.push(file)
+            }
+        },
+        async upload(){
+            const formData = new FormData()
+            for (let file of this.files) {
+                    formData.append('files', file)
+            }
+            formData.append('ref', 'hand-in-assignment')
+            formData.append('field', 'files')
+            await AssignmentStore.dispatch('uploadAssignments', formData) 
+        },
+        remove(idx) {
+            this.files = this.files.filter((item, index) => index !== idx)
+            console.log(this.files)
+        }
+    }
 
 }
 </script>
@@ -153,7 +198,7 @@ components:{
             .task_wrapper{
                 float: left;
                 margin-left: 29px;
-                width: 900px;
+                width: 700px;
                 height: 500px;
                 #details{
                     display: block;
@@ -198,7 +243,7 @@ components:{
                 }
                 .submit_bottom_wrapper{
                     height: 418px;
-                    width: 300px;
+                    width: 500px;
                     margin: 0px auto;
                     border: 1px solid #000000;
                     border-radius: 10px;

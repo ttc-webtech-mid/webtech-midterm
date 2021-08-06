@@ -3,14 +3,17 @@
     <Header></Header>
       <div class="content_wrapper">
         <Sidebar page="Class"></Sidebar>
-        <div class="content_pad">
+        <div v-if="course.length === 0">
+            Loading...
+        </div>
+        <div v-if="course.length > 0" class="content_pad">
             <div class="page_wrapper">
                 <div class="top_wrapper" href="">
                     <img src="../../public/image/cal_sbj.png" >
                     <div class="left_detail">
-                        <span id="subject">Cal</span>
-                        <span id="teacher_name">TeacherName TeacherSurname</span>
-                        <span id="teacher_email">teacher@ku.th</span>
+                        <span id="subject">{{ `${course[0].course_id} ${course[0].course_name}` }}</span>
+                        <span id="teacher_name">{{ `${course[0].teachers[0].firstname} ${course[0].teachers[0].lastname}` }}</span>
+                        <span id="teacher_email">{{ `${course[0].teachers[0].teacher_email} ` }}</span>
                     </div>
 
                     <!-- div นี้เอาออกถ้ามี role เป็นนักเรียน -->
@@ -31,34 +34,15 @@
 
 
                 </div>
-                 <a class="task_detail" href="/class/task">
-                    <img src="../../public/image/icon/task_ico.png">
-                    <div>
-                        <span id="heading">Heading Task 1</span>
-                        <span id="date">00/00/00</span>
-                    </div>
-                </a>
-                <a class="task_detail" href="/class/task">
-                    <img src="../../public/image/icon/task_ico.png">
-                    <div>
-                        <span id="heading">Heading Task 2</span>
-                        <span id="date">00/00/00</span>
-                    </div>
-                </a>
-                <a class="task_detail" href="/class/task">
-                    <img src="../../public/image/icon/task_ico.png">
-                    <div>
-                        <span id="heading">Heading Task 3</span>
-                        <span id="date">00/00/00</span>
-                    </div>
-                </a>
-                <a class="task_detail" href="/class/task">
-                    <img src="../../public/image/icon/task_ico.png">
-                    <div>
-                        <span id="heading">Heading Task 4</span>
-                        <span id="date">00/00/00</span>
-                    </div>
-                </a>
+                <div v-for="(task, index) in course[0].assignments" :key="index">
+                    <a class="task_detail" :href="'/class/' + course_id + '/' + task.id">
+                        <img src="../../public/image/icon/task_ico.png">
+                        <div>
+                            <span id="heading">{{ task.topic }}</span>
+                            <span id="date">{{ task.due_date }}</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
       </div>
@@ -66,15 +50,33 @@
 </template>
 
 <script>
+// handle loading
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import StudentStore from '@/store/StudentStore'
 
 export default {
 
-components:{
-    Header,
-    Sidebar,
-},
+    components:{
+        Header,
+        Sidebar,
+    },
+    data() {
+        return {
+            course_id: this.$route.params.id,
+            course: []
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            await StudentStore.dispatch('fetchCourseById', this.course_id)
+            this.course = StudentStore.getters.getFilterCourse
+            console.log(this.course)
+        }
+    }
 
 }
 </script>
