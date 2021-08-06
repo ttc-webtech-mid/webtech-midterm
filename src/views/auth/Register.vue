@@ -142,12 +142,13 @@ export default {
             margin: 0px 10px;
             margin-top: 5px;
             padding: 10px 10px;
-            width: 55px;
+            width: 65px;
             text-decoration: none;
             color: #FFFFFF;
             background-color: #1E6380;
             border: 1px solid #1E6380;
             border-radius: 10px;
+            cursor: pointer;
         }
 
     }
