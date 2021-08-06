@@ -20,8 +20,14 @@
                         <span id="reward">Reward</span>
                         <div class="reward_pad">
                             <div class="reward">
-                                <img src="../../public/image/reward1.png">
-                                <span>1st place 10 times</span>
+                                <img src="../../public/image/reward1.png"><br><br><br>
+                                <!-- <span>1st place 10 times</span> -->
+                                <tr v-for="(std, index) in student" :key="index">
+                                    <!-- <td><img src="../../public/image/reward1.png"></td> -->
+                                    {{std.rewards.map(it=> it.detail).join(', ')}}
+                                    
+                                </tr>
+                                
                             </div>
                         </div>
                     </div>
@@ -47,6 +53,7 @@
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import StudentStore from '@/store/StudentStore'
+import RedeemStore from '@/store/RedeemStore'
 
 // isLoading
 export default {
@@ -56,10 +63,19 @@ export default {
     },
     data() {
         return {
+            // student: [],
             student: [{
                 firstname: '',
-                lastname: ''
+                lastname: '',
+                rewards: {
+                    // reward_id: '',
+                    // reward_name: '',
+                    // redeem_points: 0,
+                    detail: ''
+                },
+                rewards_detail: ''
             }],
+            rewards: [],
             courses: []
         }
     },
@@ -70,8 +86,13 @@ export default {
         async fetchData() {
             await StudentStore.dispatch('fetchStudent')
             await StudentStore.dispatch('fetchCourses')
+            await RedeemStore.dispatch('fetchRewards')
             this.student = StudentStore.getters.getStudent
             this.courses = StudentStore.getters.getCourses
+            this.rewards = RedeemStore.getters.getRewards
+            this.rewards_detail = RedeemStore.getters.getRewards
+            // console.log("re "+this.rewards[0].students);
+            // console.log("st "+this.student[0].firstname);
         }
     }
 }
