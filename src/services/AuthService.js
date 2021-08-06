@@ -1,10 +1,10 @@
 import Axios from 'axios'
 
-const auth_key = "auth-pokedex"
+const auth_key = "auth"
 let auth = JSON.parse(localStorage.getItem(auth_key))
 const user = auth ? auth.user : ""
 const jwt = auth ? auth.jwt : ""
-const api_endpoint = "http://localhost:1337"
+const api_endpoint = process.env.VUE_APP_API_ENDPOINT || "http://localhost:1337"
 
 
 export default {
