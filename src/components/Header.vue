@@ -19,11 +19,6 @@ import StudentStore from '@/store/StudentStore'
 
 // isLoading component
 export default {
-    methods: {
-      isAuthen() {
-        return AuthUser.getters.isAuthen
-      },
-    }
     data() {
         return {
             student: [{
@@ -40,7 +35,10 @@ export default {
             await StudentStore.dispatch('fetchStudent')
             let student = StudentStore.getters.getStudent
             this.student = student
-        }
+        },
+        isAuthen() {
+        return AuthUser.getters.isAuthen
+      },
     }
 }
 </script>
