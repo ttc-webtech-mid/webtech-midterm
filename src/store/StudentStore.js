@@ -8,11 +8,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       student: [],
-      courses: []
+      courses: [],
+      filterCourse: []
   },
   getters: {
       getStudent: (state) => state.student,
-      getCourses: (state) => state.courses
+      getCourses: (state) => state.courses,
+      getFilterCourse: (state) => state.filterCourse
   },
   mutations: {
       setStudent(state, res) {
@@ -20,6 +22,9 @@ export default new Vuex.Store({
       },
       setCourses(state, res){
           state.courses = res.data
+      },
+      setFilterCourse(state, res){
+          state.filterCourse = res.data
       }
   },
   actions: {
@@ -30,6 +35,10 @@ export default new Vuex.Store({
       async fetchCourses({ commit }) {
         let res = await axios.get(baseURL + "/courses?students.std_id=6210400710")
         commit('setCourses', res)
+      },
+      async fetchCourseById({ commit }, course_id){
+        let res = await axios.get(baseURL + `/courses?students.std_id=6210400710&course_id=${course_id}`)
+        commit('setFilterCourse', res)
       }
   },
   modules: {
