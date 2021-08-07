@@ -25,16 +25,31 @@ export default new Vuex.Store({
       },
       setFilterCourse(state, res){
           state.filterCourse = res.data
+      },
+      updateStudent(state, payload) {
+        state.student[payload.index].scores = payload.scores
+        state.student[payload.index].reward_points = payload.reward_points
       }
   },
   actions: {
       async fetchStudent({ commit }) {
-        let res = await axios.get(baseURL + "/students?std_id=6210400710")
+        let res = await axios.get(baseURL + "/students")
         commit('setStudent', res)
       },
       async fetchCourses({ commit }) {
-        let res = await axios.get(baseURL + "/courses?students.std_id=6210400710")
+        let res = await axios.get(baseURL + "/courses?students")
         commit('setCourses', res)
+      },
+      async updateStudent({ commit }, payload) {
+        let body = {
+          id: payload.id,
+          scores: payload.scores,
+          reward_points: payload.reward_points
+        }
+        let url = baseURL + `/students/${payload.id}`
+        let res = await axios.put(url, body)
+        // console.log("tata " + res);
+        commit('updateStudent', res)
       },
       async fetchCourseById({ commit }, course_id){
         let res = await axios.get(baseURL + `/courses?students.std_id=6210400710&course_id=${course_id}`)
