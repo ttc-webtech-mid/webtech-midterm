@@ -10,16 +10,24 @@ let auth = JSON.parse(localStorage.getItem(auth_key))
 const initialState = {
     user: auth ? auth.user : "",
     jwt: auth ? auth.jwt : "",
-    isAuthen: auth ? true : false
+    isAuthen: auth ? true : false,
+    student: auth ? auth.user.student : "" 
 }
 
 export default new Vuex.Store({
     state: initialState,
+    getters: {
+        user: (state) => state.user,
+        jwt: (state) => state.jwt,
+        isAuthen: (state) => state.isAuthen,
+        getStudentInfo: (state) => state.student
+    },
     mutations: {
         loginSuccess(state, username, jwt) {
             state.username = username
             state.jwt = jwt
             state.isAuthen = true
+            state.student = username.student
         },
         logoutSuccess (state) {
             state.user = ""
@@ -48,11 +56,6 @@ export default new Vuex.Store({
             }
             return res
         }
-    },
-    getters: {
-        user: (state) => state.user,
-        jwt: (state) => state.jwt,
-        isAuthen: (state) => state.isAuthen,
     },
     modules: {}
 })
