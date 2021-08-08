@@ -60,8 +60,9 @@
                                 <input id="upload" type="file" name="files" multiple @change="onFileChange">
                             </div>
                         </div> 
-                        <input v-if="files.length === 0" type="submit" id="submit" style="background-color: grey" href="" disabled>
-                        <input v-if="files.length > 0" type="submit" id="submit" style="background-color: #2F72B0" href="">
+                        <!-- <input v-if="files.length === 0" type="submit" id="submit" style="background-color: grey" href="" disabled> -->
+                        <!-- v-if="files.length > 0"  -->
+                        <input type="submit" id="submit" style="background-color: #2F72B0" href="">
                         <!-- <a id="submit" style="background-color: #CE2828; margin-right: 110px" href="">unsubmit</a> -->
                     </div>
                     </form>
@@ -104,7 +105,7 @@
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import AssignmentStore from "@/store/AssignmentStore"
-import axios from 'axios'
+import StudentStore from "@/store/StudentStore"
 
 export default {
 
@@ -147,7 +148,8 @@ export default {
             }
             formData.append('ref', 'hand-in-assignment')
             formData.append('field', 'files')
-            await AssignmentStore.dispatch('uploadAssignments', formData) 
+            // await AssignmentStore.dispatch('uploadAssignments', formData)
+            await StudentStore.dispatch('addScore')
         },
         remove(idx) {
             this.files = this.files.filter((item, index) => index !== idx)
