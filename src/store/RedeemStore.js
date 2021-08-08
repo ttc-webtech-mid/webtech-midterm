@@ -17,7 +17,8 @@ export default new Vuex.Store({
         state.rewards = res.data
       },
       updateRewards(state, payload) {
-        state.rewards[payload.index].students = payload.students
+        // console.log(payload)
+        // state.rewards[payload.id].students = payload.data.students
       }
   },
   actions: {
@@ -26,17 +27,16 @@ export default new Vuex.Store({
         commit('setRewards', res)
       },
       async updateRewards({ commit }, payload) {
-        console.log("tata2 come");
+        let selectedReward = await axios.get(baseURL + `/rewards/${payload.id}`)
+        let beforeStudents = selectedReward.data.students.map(student => student.id)
+        beforeStudents.push(payload.std_id)
         let body = {
           id: payload.id,  
-          students: [{
-            id: payload.std_id
-          }]
+          students: beforeStudents
         }
         let url = baseURL + `/rewards/${payload.id}`
         let res = await axios.put(url, body)
-        console.log("tata2 " + res);
-        commit('updateRewards', res)
+        commit('updateRewards', payload)
       }
   },
   modules: {
