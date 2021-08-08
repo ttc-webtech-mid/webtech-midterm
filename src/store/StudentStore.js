@@ -27,33 +27,62 @@ export default new Vuex.Store({
           state.filterCourse = res.data
       },
       updateStudent(state, payload) {
-        state.student[payload.index].scores = payload.scores
-        state.student[payload.index].reward_points = payload.reward_points
+        state.student[0].reward_points = payload.reward_points
+      },
+      updateScoreAndReward(state, res){
+        state.student[0].scores = res.data.scores
+        state.student[0].reward_points = res.data.scores
       }
   },
   actions: {
-      async fetchStudent({ commit }) {
-        let res = await axios.get(baseURL + "/students")
+      async fetchStudent({ commit }, studentID) {
+        let res = await axios.get(baseURL + "/students?std_id=" + studentID)
         commit('setStudent', res)
       },
-      async fetchCourses({ commit }) {
-        let res = await axios.get(baseURL + "/courses?students")
+      async fetchCourses({ commit }, studentID) {
+        let res = await axios.get(baseURL + "/courses?students.std_id=" + studentID)
         commit('setCourses', res)
       },
       async updateStudent({ commit }, payload) {
         let body = {
           id: payload.id,
-          scores: payload.scores,
+          // scores: payload.scores, // update ?
           reward_points: payload.reward_points
         }
+        let toHistoryTable = {
+          points_redeem: payload.redeem_point,
+          student: [this.state.student[0].id]
+        }
+        await updateHistory(toHistoryTable)
+
         let url = baseURL + `/students/${payload.id}`
         let res = await axios.put(url, body)
-        // console.log("tata " + res);
-        commit('updateStudent', res)
+        commit('updateStudent', payload)
       },
       async fetchCourseById({ commit }, course_id){
         let res = await axios.get(baseURL + `/courses?students.std_id=6210400710&course_id=${course_id}`)
         commit('setFilterCourse', res)
+      },
+      async addScore({ commit }) {
+        let toHistoryTable = {
+          points_received: 5, // HARDCODE points receive
+          student: [this.state.student[0].id]
+        }
+        await updateHistory(toHistoryTable)
+
+        let toStudentTable = {
+          scores: parseInt(this.state.student[0].scores) + 5,
+          reward_points: parseInt(this.state.student[0].reward_points) + 5
+        }
+
+        let studentTableURL = baseURL + `/students/${this.state.student[0].id}`
+        let studentRes = await axios.put(studentTableURL, toStudentTable)
+
+        commit('updateScoreAndReward', studentRes)
+      },
+      async updateHistory(toHistoryTable) {
+        let historyTableURL = baseURL + `/score-histories`
+        let historyRes = await axios.post(historyTableURL, toHistoryTable)
       }
   },
   modules: {
