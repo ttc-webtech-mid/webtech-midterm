@@ -24,10 +24,15 @@
                                 <!-- <span>1st place 10 times</span> -->
                                 <tr v-for="(std, index) in student" :key="index">
                                     <!-- <td><img src="../../public/image/reward1.png"></td> -->
-                                    {{std.rewards.map(it=> it.detail).join(', ')}}
-                                    
+                                    <div v-for="(reward, index) in std.rewards" :key="index">
+                                        <p>{{ reward.reward_name }}</p>
+                                        <p>{{ reward.detail }}</p>
+                                    </div>
                                 </tr>
-                                
+                                <button @click="openHistory" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                                    History
+                                </button>
+                                <history ref="modal"></history>
                             </div>
                         </div>
                     </div>
@@ -54,17 +59,20 @@ import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import StudentStore from '@/store/StudentStore'
 import RedeemStore from '@/store/RedeemStore'
+import AuthUser from '@/store/AuthUser'
+import History from '@/components/History'
 
 // isLoading
 export default {
     data() {
         return {
-            
+            isOpen: false
         }
     },
     components:{
         Header,
-        Sidebar
+        Sidebar,
+        History
     },
     data() {
         return {
@@ -89,15 +97,20 @@ export default {
     },
     methods: {
         async fetchData() {
-            await StudentStore.dispatch('fetchStudent')
-            await StudentStore.dispatch('fetchCourses')
+            let studentLogin = AuthUser.getters.getStudentInfo
+            await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
+            await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
             await RedeemStore.dispatch('fetchRewards')
             this.student = StudentStore.getters.getStudent
+            console.log(this.student)
             this.courses = StudentStore.getters.getCourses
             this.rewards = RedeemStore.getters.getRewards
             this.rewards_detail = RedeemStore.getters.getRewards
             // console.log("re "+this.rewards[0].students);
             // console.log("st "+this.student[0].firstname);
+        },
+        openHistory() {
+            this.$refs.modal.openModal()
         }
     }
 }
