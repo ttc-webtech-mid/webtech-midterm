@@ -11,6 +11,13 @@
                 <div class="top_wrapper" href="">
                     <img src="../../public/image/cal_sbj.png" >
                     <div class="left_detail">
+                        <!-- <span id="subject">Cal</span> -->
+                        <span id="subject">{{ `${courses[0].course_name}` }}</span>
+                        <!-- <span id="teacher_name">TeacherName TeacherSurname</span> -->
+                        <span id="teacher_name">{{ `${courses[0].teachers[0].firstname}&nbsp;&nbsp;${courses[0].teachers[0].lastname}` }}</span>
+                        <!-- <span id="teacher_email">teacher@ku.th</span> -->
+                        <span id="teacher_email">{{ `${courses[0].teachers[0].teacher_email}` }}</span>
+
                         <span id="subject">{{ `${course[0].course_id} ${course[0].course_name}` }}</span>
                         <span id="teacher_name">{{ `${course[0].teachers[0].firstname} ${course[0].teachers[0].lastname}` }}</span>
                         <span id="teacher_email">{{ `${course[0].teachers[0].teacher_email} ` }}</span>
@@ -18,9 +25,13 @@
 
                     <!-- div นี้เอาออกถ้ามี role เป็นนักเรียน -->
                     <div>
-                        <b-button class="add_task" v-b-modal.modal-xl variant="primary"><img src="../../public/image/icon/add_ico.png">Add somthing task to your class</b-button>
-                        <b-modal id="modal-xl" size="xl" title="Add task">
+                        <b-button class="add_task" v-b-modal.modal-xl variant="primary" ref="btnShow"><img src="../../public/image/icon/add_ico.png">Add something task to your class</b-button>
+                        <!-- <b-modal id="modal-xl" size="xl" title="Add task">
                             <form action="">
+                                <span>Topic</span>
+                                <div>
+                                    <input type="text" id="topic">
+                                </div>
                                 <span>Details</span>
                                 <div id="due">
                                     Due:
@@ -28,12 +39,64 @@
                                 </div> 
                                 <br>
                                 <textarea name="details" id="details"></textarea>
+                                
                             </form>
-                            </b-modal>
+                            
+                        </b-modal> -->
+                        <b-modal id="modal-xl" size="xl" title="Add task" hide-footer>
+                            <form action="">
+                                <span>Topic</span>
+                                <div>
+                                    <input type="text" id="topic" v-model="form.topic">
+                                </div>
+                                <span>Details</span>
+                                <div id="due">
+                                    Due:
+                                    <input type="date" v-model="form.due_date">
+                                </div> 
+                                <br>
+                                <textarea name="details" id="details" v-model="form.detail"></textarea>
+                                
+                            </form>
+                            <b-button @click="addAssignment">OK</b-button>   
+                        </b-modal>
                     </div>
 
 
                 </div>
+                <div v-for="(task, index) in assignments" :key="index">
+                    <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
+                    <div>
+                        <!-- <span id="heading">Heading Task 1</span> -->
+                        <span id="heading">{{`${assignments[index].topic}`}}</span>
+                        <!-- <span id="date">00/00/00</span> -->
+                        <span id="date">{{`${assignments[index].due_date}`}}</span>
+                    </div>
+                    </a>
+                </div>
+                <!-- <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
+                    <div>
+                        <span id="heading">Heading Task 2</span>
+                        <span id="date">00/00/00</span>
+                    </div>
+                </a>
+                <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
+                    <div>
+                        <span id="heading">Heading Task 3</span>
+                        <span id="date">00/00/00</span>
+                    </div>
+                </a>
+                <a class="task_detail" href="/class/task">
+                    <img src="../../public/image/icon/task_ico.png">
+                    <div>
+                        <span id="heading">Heading Task 4</span>
+                        <span id="date">00/00/00</span>
+                    </div>
+                </a> -->
+                <!-- <div v-for="(task, index) in "></div> -->
                 <div v-for="(task, index) in course[0].assignments" :key="index">
                     <a class="task_detail" :href="'/class/' + course_id + '/' + task.id">
                         <img src="../../public/image/icon/task_ico.png">
@@ -54,9 +117,54 @@
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import StudentStore from '@/store/StudentStore'
+import CoursesStore from '@/store/CoursesStore'
+import AssignmentStore from '@/store/AssignmentStore'
 
 export default {
+    data() {
+        return {
+            courses: [],
+            assignments: [],
+            form: {
+                topic: '',
+                detail: '',
+                due_date: ''
+            }
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            await CoursesStore.dispatch('fetchCourses')
+            let course = CoursesStore.getters.getCourses
+            this.courses = course
 
+            await AssignmentStore.dispatch('fetchAssignments')
+            let assignment = AssignmentStore.getters.getAssignments
+            this.assignments = assignment
+        },
+        addAssignment() {
+            console.log("Test");
+            let payload = {
+                topic: this.form.topic,
+                detail: this.form.detail,
+                due_date: this.form.due_date
+            }
+            AssignmentStore.dispatch("addAssignment", payload)
+            this.fetchData()
+            this.clearForm()
+            this.$root.$emit('bv::hide::modal', 'modal-xl', '#btnShow')
+        },
+        clearForm() {
+            this.form = {
+                topic: '',
+                detail: '',
+                due_date: ''
+            }
+        }
+    },
     components:{
         Header,
         Sidebar,
@@ -77,6 +185,11 @@ export default {
             console.log(this.course)
         }
     }
+
+    components:{
+        Header,
+        Sidebar,
+    },
 
 }
 </script>
