@@ -3,35 +3,18 @@
     <Header></Header>
       <div class="content_wrapper">
         <Sidebar page="Store"></Sidebar>
-        <h5>ไว้เช็คแต้มที่เหลือเฉยๆ ลบออกให้ด้วย</h5>
-        <h5>{{ `Scores ${student[0].scores} point_total ${student[0].reward_points}` }}</h5>
-        <h5>{{ `point_total_balance ${student[0].reward_points}` }}</h5>
         <div class="content_pad">
-            <div class="item_wrapper">
-                <button @click="redeemReward(student[0].reward_points, 0)">Buy</button>
-                <img src="../../public/image/storeItems/item2.png">
-                <span id="detail">1st in leader board</span>
-                <br>
-                <span id="price">1000 Points</span>
-                <!-- <span id="price">{{`${rewards[0].redeem_points}`}} Points</span> -->
-            </div>
-
-             <div class="item_wrapper">
-                <button @click="redeemReward(student[0].reward_points, 1)">Buy</button>
-                <img src="../../public/image/storeItems/item3.png">
-                <span id="detail">2nd in leader board</span>
-                <br>
-                <span id="price">750 Points</span>
-                <!-- <span id="price">{{`${rewards[1].redeem_points}`}} Points</span> -->
-            </div>
-            
-            <div class="item_wrapper">
-                <button @click="redeemReward(student[0].reward_points, 2)">Buy</button>
-                <img src="../../public/image/storeItems/item4.png">
-                <span id="detail">3rd in leader board</span>
-                <br>
-                <span id="price">500 Points</span>
-                <!-- <span id="price">{{`${rewards[2].redeem_points}`}} Points</span> -->
+            <p>points คงเหลือ {{ student[0].reward_points }}</p>
+            <div v-for="(reward, index) in rewards" :key="index">
+                <div class="item_wrapper">
+                    <button @click="redeemReward(student[0].reward_points, index)">Buy</button>
+                    <img src="../../public/image/storeItems/item2.png">
+                    <span id="detail">{{ reward.reward_name }}</span>
+                    <p>{{ reward.detail }}</p>
+                    <br>
+                    <span id="price">{{ reward.redeem_points || 0}} points</span>
+                    <!-- <span id="price">{{`${rewards[0].redeem_points}`}} Points</span> -->
+                </div>
             </div>
 
         </div>
@@ -44,6 +27,7 @@ import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import StudentStore from '@/store/StudentStore'
 import RedeemStore from '@/store/RedeemStore'
+import AuthUser from '@/store/AuthUser'
 
 export default {
     data() {
@@ -74,9 +58,11 @@ export default {
     },
     methods: {
         async fetchData() {
-            await StudentStore.dispatch('fetchStudent')
+            let studentLogin = AuthUser.getters.getStudentInfo
+            await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
             let student = StudentStore.getters.getStudent
             this.student = student
+            console.log(this.student)
 
             await RedeemStore.dispatch('fetchRewards')
             let rewards = RedeemStore.getters.getRewards
@@ -84,7 +70,7 @@ export default {
             this.student.rewards = rewards
         },
         async redeemReward(std_points, redeem_id) {
-            if (std_points > 0) {
+            if (std_points >= 0) {
                 let redeem_point = this.rewards[redeem_id].redeem_points
                 if (std_points >= redeem_point) {
                     let std_points_balance = std_points - redeem_point
@@ -94,10 +80,11 @@ export default {
                     let payload_std = {
                         id: this.student[0].id,
                         scores: this.student[0].scores,
-                        reward_points: this.student[0].reward_points
+                        reward_points: this.student[0].reward_points,
+                        redeem_point: redeem_point
                     }
 
-                    this.updateReward(redeem_id)
+                    await this.updateReward(redeem_id)
                     await StudentStore.dispatch('updateStudent', payload_std)
                 }
             }
@@ -106,7 +93,7 @@ export default {
             // console.log("number "+redeem_id+1);
             let payload_reward = {
                 id: redeem_id + 1,
-                std_id: 1
+                std_id: this.student[0].id
             }
             await RedeemStore.dispatch('updateRewards', payload_reward)
         }
