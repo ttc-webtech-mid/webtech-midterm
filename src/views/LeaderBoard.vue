@@ -31,6 +31,7 @@
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import LeaderBoardStore from '@/store/LeaderBoardStore'
+import AuthUser from '@/store/AuthUser'
 
 export default {
     components:{
@@ -39,7 +40,8 @@ export default {
     },
     data() {
         return {
-            students: []
+            students: [],
+            myself: ""
         }
     },
     created() {
@@ -47,6 +49,8 @@ export default {
     },
     methods: {
         async fetchData() {
+            let studentLogin = AuthUser.getters.getStudentInfo
+            this.myself = studentLogin.firstname + ' ' + studentLogin.lastname
             await LeaderBoardStore.dispatch('fetchStudents')
             let student = LeaderBoardStore.getters.getStudents
             this.students = student

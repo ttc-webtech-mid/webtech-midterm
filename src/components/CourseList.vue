@@ -17,6 +17,7 @@
 
 <script>
 import StudentStore from '@/store/StudentStore'
+import AuthUser from '@/store/AuthUser'
 
 export default {
     data() {
@@ -29,7 +30,8 @@ export default {
     },
     methods: {
         async fetchData() {
-            await StudentStore.dispatch('fetchCourses')
+            let studentLogin = AuthUser.getters.getStudentInfo
+            await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
             let courses = StudentStore.getters.getCourses
             this.courses = courses
             console.log(this.courses)

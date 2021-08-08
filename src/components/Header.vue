@@ -32,7 +32,8 @@ export default {
     },
     methods: {
         async fetchData() {
-            await StudentStore.dispatch('fetchStudent')
+            let studentLogin = AuthUser.getters.getStudentInfo
+            await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
             let student = StudentStore.getters.getStudent
             this.student = student
         },
