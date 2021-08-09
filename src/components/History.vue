@@ -3,7 +3,7 @@
         <!-- Modal Background -->
         <div class="fixed text-gray-500 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-25 left-0 right-0 top-0 bottom-0">
             <!-- Modal -->
-            <div class="bg-white rounded-xl shadow-2xl p-6 sm:w-10/12 mx-10" >
+            <div class="bg-white rounded-xl shadow-2xl p-6 sm:w-10/12 mx-10" style="overflow-y: auto; max-height: 680px;">
                 <!-- Title -->
                 <span class="font-bold block text-2xl mb-3">🍺 ประวัติการแลกคะแนน </span>
                  <nav class="flex flex-col sm:flex-row">
@@ -99,6 +99,8 @@ export default {
             await HistoryStore.dispatch('fetchHistory', studentLogin.std_id)
             this.receivedList = HistoryStore.getters.getReceivedHistory
             this.redeemList = HistoryStore.getters.getRedeemHistory
+            console.log(this.receivedList)
+            console.log(this.redeemList)
         },
         openModal() {
             this.showModal = this.showModal ? false : true

@@ -4,7 +4,9 @@
         
         <div class="content_wrapper">
           <Sidebar page="About"></Sidebar>
-          <h1>Developers</h1>
+          <div class="text-center my-4 tracking-wider">
+            <p class="text-3xl font-semibold">Developers</p>
+          </div>
           <div class="content_pad">
             <div class="profile_wrapper">
               <img src="../../public/image/profile_member/chat.jpg">

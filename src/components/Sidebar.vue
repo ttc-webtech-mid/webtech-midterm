@@ -26,7 +26,7 @@
                 <span>Class</span>
               </a>
           </div> -->
-          <div v-if="role === 'Authenticated' || role === 'Admin'">
+          <div v-if="role === 'Authenticated'">
             <div v-if="page==='Leader Board'">
                 <a class="selected_page" href="/leader_Board">
                   <img src="../../public/image/icon/leaderBoard_ico.png">
@@ -59,13 +59,13 @@
           
       </div>
       <div class="bottom">
-          <div v-if="page==='Profile'">
+          <div v-if="page==='Profile' && role !== 'Admin'">
             <a class="selected_page" href="/profile">
                 <img src="../../public/image/icon/profile_ico.png">
                 <span>Profile</span>
             </a>
           </div>
-          <div v-if="page!=='Profile'">
+          <div v-if="page!=='Profile' && role !== 'Admin'">
             <a class="not_selected_page" href="/profile">
                 <img src="../../public/image/icon/profile_ico.png">
                 <span>Profile</span>

@@ -49,17 +49,19 @@ export default {
             role: ""
         }
     },
-    created() {
-        this.fetchData()
+    async created() {
+        await this.fetchData()
     },
     methods: {
         async fetchData() {
             let role = AuthUser.getters.getRole
             this.role = role
-            if (role === "Teacher") {
+            console.log(this.role)
+            if (this.role === "Teacher") {
                 let { teacher } = AuthUser.getters.user // change this to every student page!
                 await TeacherStore.dispatch('fetchCourses', teacher.id)
                 this.courses = TeacherStore.getters.getCourses
+                console.log(this.courses)
             } else {
                 let studentLogin = AuthUser.getters.getStudentInfo
                 await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
