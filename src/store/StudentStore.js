@@ -43,6 +43,10 @@ export default new Vuex.Store({
         let res = await axios.get(baseURL + "/courses?students.std_id=" + studentID)
         commit('setCourses', res)
       },
+      async fetchCourseById({ commit }, course_id){
+        let res = await axios.get(baseURL + `/courses?students.std_id=6210400710&course_id=${course_id}`)
+        commit('setFilterCourse', res)
+      },
       async updateStudent({ commit }, payload) {
         let body = {
           id: payload.id,
@@ -59,15 +63,12 @@ export default new Vuex.Store({
         let res = await axios.put(url, body)
         commit('updateStudent', payload)
       },
-      async fetchCourseById({ commit }, course_id){
-        let res = await axios.get(baseURL + `/courses?students.std_id=6210400710&course_id=${course_id}`)
-        commit('setFilterCourse', res)
-      },
-      async addScore({ commit }) {
+      async addScore({ commit }, studentID) {
         let toHistoryTable = {
           points_received: 5, // HARDCODE points receive
-          student: [this.state.student[0].id]
+          student: studentID || [this.state.student[0].id]
         }
+        console.log(toHistoryTable)
         await updateHistory(toHistoryTable)
 
         let toStudentTable = {
