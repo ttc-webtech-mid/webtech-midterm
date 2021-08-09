@@ -38,7 +38,7 @@
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ index + 1 }}</td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ item.points_received }} คะแนน</td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ item.reward || "ได้รับคะแนนจากการส่งงาน" }}</td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ covnertDate(item.created_at) }}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ convertDate(item.created_at) }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -63,7 +63,7 @@
                                 <p>{{ item.reward.reward_name }}</p>
                                 <p>{{ item.reward.detail }}</p>
                             </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ covnertDate(item.created_at) }}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">{{ convertDate(item.created_at) }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -115,7 +115,7 @@ export default {
             this.isClickedReceived = !this.isClickedReceived
             this.isClickedRedeem = !this.isClickedRedeem
         },
-        covnertDate(createdAt) {
+        convertDate(createdAt) {
             let date = new Date(createdAt)
             let formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())
             return formatDate.toLocaleString().replace(',', '')
