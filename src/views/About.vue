@@ -4,6 +4,7 @@
         
         <div class="content_wrapper">
           <Sidebar page="About"></Sidebar>
+          <h1>Developers</h1>
           <div class="content_pad">
             <div class="profile_wrapper">
               <img src="../../public/image/profile_member/chat.jpg">
