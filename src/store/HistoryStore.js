@@ -8,7 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       receivedHistory: [],
-      redeemHistory: []
+      redeemHistory: [],      
+      histories: []
   },
   getters: {
       getReceivedHistory: (state) => state.receivedHistory,
@@ -20,14 +21,13 @@ export default new Vuex.Store({
       },
       setRedeemHistory(state, history){
           state.redeemHistory = history
-      }
+      },
   },
   actions: {
       async fetchHistory({ commit }, studentID) {
         let res = await axios.get(baseURL + "/score-histories?student.std_id=" + studentID)
         let receivedHistory = res.data.filter(score => score.points_received > 0)
         let redeemHistory = res.data.filter(score => score.points_redeem > 0)
-
         commit('setReceivedHistory', receivedHistory)
         commit('setRedeemHistory', redeemHistory)
       },

@@ -12,7 +12,7 @@
                     <div class="top_detail_wrapper">
                         <span id="username">User: {{ `${student[0].firstname} ${student[0].lastname}` }}</span>
                         <br>
-                        <span id="email">abc@ku.th</span>
+                        <span id="email">{{ student[0].student_email }}</span>
                     </div>
                 </div>
                 <div class="bottom_wrapper">
@@ -20,16 +20,15 @@
                         <span id="reward">Reward</span>
                         <div class="reward_pad">
                             <div class="reward">
-                                <img src="../../public/image/reward1.png"><br><br><br>
-                                <!-- <span>1st place 10 times</span> -->
                                 <tr v-for="(std, index) in student" :key="index">
-                                    <!-- <td><img src="../../public/image/reward1.png"></td> -->
                                     <div v-for="(reward, index) in std.rewards" :key="index">
-                                        <p>{{ reward.reward_name }}</p>
-                                        <p>{{ reward.detail }}</p>
+                                        <div class="flex py-2">
+                                            <img class="w-44 h-44" :src="openPic(reward)">
+                                            <p class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-indigo-100 bg-yellow-500 rounded">{{ reward.reward_name }}</p>
+                                        </div>
                                     </div>
                                 </tr>
-                                <button @click="openHistory" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                                <button @click="openHistory" class="text-white bg-pink-400 hover:bg-gray-700 hover:text-white block px-3 py-2 my-2 rounded-md text-base font-medium">
                                     History
                                 </button>
                                 <history ref="modal"></history>
@@ -91,11 +90,6 @@ import TeacherStore from '@/store/TeacherStore'
 
 // isLoading
 export default {
-    data() {
-        return {
-            isOpen: false
-        }
-    },
     components:{
         Header,
         Sidebar,
@@ -118,7 +112,8 @@ export default {
             rewards: [],
             courses: [],
             teacher: [],
-            role: ''
+            role: '',
+            isOpen: false
         }
     },
     created() {
@@ -127,7 +122,7 @@ export default {
     methods: {
         async fetchData() {
             this.role = AuthUser.getters.getRole
-            if (this.role === AuthUser.getters.getRole) {
+            if (this.role === 'Teacher') {
                 this.teacher.push (AuthUser.getters.user.teacher)
                 await TeacherStore.dispatch('fetchCourses', this.teacher[0].id)
                 this.courses = TeacherStore.getters.getCourses
@@ -145,6 +140,10 @@ export default {
         },
         openHistory() {
             this.$refs.modal.openModal()
+        },
+        openPic(reward){
+            // console.log(reward)
+            return `${process.env.VUE_APP_API_ENDPOINT}${reward.picture.url}`
         }
     }
 }

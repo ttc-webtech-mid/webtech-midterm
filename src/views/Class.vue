@@ -11,9 +11,9 @@
                 <div class="top_wrapper" href="">
                     <img src="../../public/image/cal_sbj.png" >
                     <div class="left_detail">
-                        <span id="subject">{{ `${courses[0].course_name}` }}</span>
-                        <span id="teacher_name">{{ `${courses[0].teachers[0].firstname}&nbsp;&nbsp;${courses[0].teachers[0].lastname}` }}</span>
-                        <span id="teacher_email">{{ `${courses[0].teachers[0].teacher_email}` }}</span>
+                        <span id="subject">{{ `${course[0].course_name}` }}</span>
+                        <span id="teacher_name">{{ `${course[0].teachers[0].firstname}&nbsp;&nbsp;${course[0].teachers[0].lastname}` }}</span>
+                        <span id="teacher_email">{{ `${course[0].teachers[0].teacher_email}` }}</span>
                     </div>
 
                     <!-- div นี้เอาออกถ้ามี role เป็นนักเรียน -->
@@ -124,9 +124,9 @@ export default {
     methods: {
         async fetchData() {
             this.role = AuthUser.getters.getRole
-            await CoursesStore.dispatch('fetchCourses')
-            let course = CoursesStore.getters.getCourses
-            this.courses = course
+            // await CoursesStore.dispatch('fetchCourses')
+            // let course = CoursesStore.getters.getCourses
+            // this.courses = course
 
             await AssignmentStore.dispatch('fetchAssignments')
             let assignment = AssignmentStore.getters.getAssignments
@@ -147,7 +147,8 @@ export default {
                 detail: this.form.detail,
                 due_date: datetime,
                 teacher: [teacher.id],
-                courseID: this.course_id
+                courseID: this.course_id,
+                students: []
             }
             AssignmentStore.dispatch("addAssignment", payload)
             this.fetchData()

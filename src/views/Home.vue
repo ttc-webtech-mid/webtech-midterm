@@ -4,12 +4,39 @@
       <div class="content_wrapper">
         <Sidebar page="Home"></Sidebar>
         <div class="content_pad">
-        <!-- <course-list></course-list> -->
+        <div v-if="role === 'Authenticated' || role === 'Teacher'">
+          <course-list></course-list>
+        </div>
+
+        <div v-if="role === 'Admin'">
 
           <div class="board_wrapper">
-            
+            <div class='flex'>
+              <div>
+                <button @click="receivedHistory" v-if="isClickedReceived" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                    ประวัติการได้รับคะแนน
+                </button>
+                <button @click="receivedHistory" v-if="!isClickedReceived" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+                    ประวัติการได้รับคะแนน
+                </button>
+              </div>
+              <div>
+                <button @click="redeemHistory" v-if="isClickedRedeem" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                    ประวัติการแลกคะแนน
+                </button>
+
+                <button @click="redeemHistory" v-if="!isClickedRedeem" class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+                    ประวัติการแลกคะแนน
+                </button>
+              </div>
+            </div>
             <div class="head_table">
-              <span id="header_table">POINTS EARNED</span>
+              <div v-if="isClickedReceived === true">
+                <span id="header_table">POINTS EARNED</span>
+              </div>
+              <div v-if="isClickedRedeem === true">
+                <span id="header_table">POINTS SPENT</span>
+              </div>
               <input id="time_search" type="date">
               <span id="time_search">Search :</span>
             </div>
@@ -23,42 +50,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(std, index) in students" :key="index">
+                    <tr v-for="(std, index) in histories" :key="index">
                         <td id="rank_body"> {{ index + 1 }} </td>
-                        <td id="name_body"> {{ `${std.firstname} ${std.lastname}` }} </td>
-                        <td id="points_body">{{ `${std.scores}` }}</td>
+                        <td id="name_body"> {{ `${std.student.firstname} ${std.student.lastname}` }} </td>
+                        <td id="points_body">{{ `${std.points}` }}</td>
                     </tr>
                 </tbody>
             </table>  
           </div>
-
-          <div class="board_wrapper">
-
-            <div class="head_table">
-              <span id="header_table">POINTS USED</span>
-              <input id="time_search" type="date">
-              <span id="time_search">Search :</span>
-            </div>
-
-              <table>
-                  <thead>
-                      <tr id="head">
-                          <th id="rank_head">Rank</th>
-                          <th id="name_head">Name</th>
-                          <th id="points_head">Total Points</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr v-for="(std, index) in students" :key="index">
-                          <td id="rank_body"> {{ index + 1 }} </td>
-                          <td id="name_body"> {{ `${std.firstname} ${std.lastname}` }} </td>
-                          <td id="points_body">{{ `${std.scores}` }}</td>
-                      </tr>
-                  </tbody>
-              </table>
-              
-          </div>
-
+        </div>
         </div>
       </div>
   </div>
@@ -68,12 +68,49 @@
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import CourseList from '../components/CourseList.vue'
+import AuthUser from '@/store/AuthUser'
+import LeaderBoardStore from '@/store/LeaderBoardStore'
 
 export default {
     components:{
         Header,
         Sidebar,
         CourseList,
+    },
+    data() {
+      return {
+        role :'',
+        histories: [],
+        isClickedReceived: true,
+        isClickedRedeem: false,
+      }
+    },
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      async fetchData() {
+        let role = AuthUser.getters.getRole
+        this.role = role
+        if (this.role === 'Admin') {
+          await LeaderBoardStore.dispatch('fetchHistory', 'receive')
+          this.histories = LeaderBoardStore.getters.getHistories
+        }
+      },
+        async receivedHistory() {
+          this.toggleTab()
+          await LeaderBoardStore.dispatch('fetchHistory', 'receive')
+          this.histories = LeaderBoardStore.getters.getHistories
+        },
+        async redeemHistory() {
+          this.toggleTab()
+          await LeaderBoardStore.dispatch('fetchHistory', 'redeem')
+          this.histories = LeaderBoardStore.getters.getHistories
+        },
+        toggleTab() {
+            this.isClickedReceived = !this.isClickedReceived
+            this.isClickedRedeem = !this.isClickedRedeem
+        },
     }
 }
 </script>

@@ -42,7 +42,6 @@
                                             <button @click="remove(index)"> x </button>
                                     </div>
                                 </div>
-
                                 <div v-if="uploadedFiles.length > 0">
                                     <div v-for="(file, index) in uploadedFiles" :key="index">
                                             <a href="">
@@ -62,10 +61,22 @@
                         </div> 
                         <!-- <input v-if="files.length === 0" type="submit" id="submit" style="background-color: grey" href="" disabled> -->
                         <!-- v-if="files.length > 0"  -->
-                        <input type="submit" id="submit" style="background-color: #2F72B0" href="">
+                        <input type="submit" @click="successUpload" id="submit" style="background-color: #2F72B0" href="">
                         <!-- <a id="submit" style="background-color: #CE2828; margin-right: 110px" href="">unsubmit</a> -->
                     </div>
                     </form>
+                    <div v-if="isSuccess" class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2">
+                        <!-- icons -->
+                        <div class="text-green-500 rounded-full bg-white mr-3">
+                            <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                            </svg>
+                        </div>
+                        <!-- message -->
+                        <div class="text-white max-w-xs ">
+                            ส่งงานสำเร็จ!
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ของ role ที่เป็นอาจารย์ -->
@@ -120,7 +131,8 @@ export default {
             isSubmit: false,
             uploadedFiles: [],
             role: "",
-            turnedIn: []
+            turnedIn: [],
+            isSuccess: false
         }
     },
     created() {
@@ -141,7 +153,13 @@ export default {
             }
             else {
                 AssignmentStore.dispatch("fetchUploadedFiles")
-                this.uploadedFiles = AssignmentStore.getters.getUploadedFiles[0]['files']
+                let uploadedFiles = AssignmentStore.getters.getUploadedFiles
+                console.log(uploadedFiles)
+                if(uploadedFiles.length !== 0) {
+                    this.uploadedFiles = AssignmentStore.getters.getUploadedFiles[0]['files']
+                }else {
+                    this.uploadedFiles = []
+                }
             }
         },
         onFileChange(event) {
@@ -157,7 +175,7 @@ export default {
             }
             formData.append('ref', 'hand-in-assignment')
             formData.append('field', 'files')
-            // await AssignmentStore.dispatch('uploadAssignments', formData)
+            await AssignmentStore.dispatch('uploadAssignments', formData)
             await StudentStore.dispatch('addScore')
         },
         remove(idx) {
@@ -171,6 +189,9 @@ export default {
         },openTask(url) {
             return process.env.VUE_APP_API_ENDPOINT + url
         },
+        successUpload() {
+            this.isSuccess = !this.isSuccess
+        }
     }
 
 }

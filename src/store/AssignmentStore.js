@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import AuthService from '@/services/AuthService'
 
 let baseURL = process.env.VUE_APP_API_ENDPOINT || "http://localhost:1337"
 Vue.use(Vuex)
@@ -28,7 +29,11 @@ export default new Vuex.Store({
       setUploadedFiles(state) {
           let handInAssignments = state.filterAssignment[0]['hand_in_assignments']
           let uploadedFiles = handInAssignments.filter(task => task.student === 2)
-          state.uploadedFiles = uploadedFiles
+          if (uploadedFiles !== []) {
+              state.uploadedFiles = uploadedFiles
+          }else {
+              state.uploadedFiles = []
+          }
       },
       addAssignment(state, payload) {
         state.assignments.push(payload.data)
@@ -79,12 +84,14 @@ export default new Vuex.Store({
                student: 2,
                assignment: this.state.filterAssignment[0].id
            }
+           let headers = AuthService.getApiHeader()
+           console.log(headers)
             try {
-                const postAssignmentsResponse = await axios.post('http://localhost:1337/hand-in-assignments', body)
+                const postAssignmentsResponse = await axios.post(`${baseURL}/hand-in-assignments`, body, headers)
                 const newFilesId = postAssignmentsResponse.data.id
                 console.log(newFilesId)
                 formData.append('refId', newFilesId)
-                let res = await axios.post('http://localhost:1337/upload', formData)
+                let res = await axios.post(`${baseURL}/upload`, formData, headers)
                 
                 // return res
             } catch(e) {
@@ -103,6 +110,7 @@ export default new Vuex.Store({
                 "students": [1, 2]
             }
            */
+        let headers = AuthService.getApiHeader()
         let student = await axios.get(`${baseURL}/students?courses.course_id=${payload.courseID}`)
         let course = await axios.get(`${baseURL}/courses?course_id=${payload.courseID}`)
         console.log(course.data)
@@ -116,7 +124,7 @@ export default new Vuex.Store({
         }
 
         let url = baseURL + `/assignments/`
-        let res = await axios.post(url, body)
+        let res = await axios.post(url, body, headers)
         commit('addAssignment', res)
       }
   },

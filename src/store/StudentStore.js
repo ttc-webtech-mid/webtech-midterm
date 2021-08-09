@@ -53,11 +53,15 @@ export default new Vuex.Store({
           // scores: payload.scores, // update ?
           reward_points: payload.reward_points
         }
+        console.log(body)
         let toHistoryTable = {
           points_redeem: payload.redeem_point,
-          student: [this.state.student[0].id]
+          student: [this.state.student[0].id],
+          reward: payload.redeem_id
         }
-        await updateHistory(toHistoryTable)
+        console.log(toHistoryTable)
+        let historyTableURL = baseURL + `/score-histories`
+        let historyRes = await axios.post(historyTableURL, toHistoryTable)
 
         let url = baseURL + `/students/${payload.id}`
         let res = await axios.put(url, body)
@@ -68,8 +72,9 @@ export default new Vuex.Store({
           points_received: 5, // HARDCODE points receive
           student: studentID || [this.state.student[0].id]
         }
-        console.log(toHistoryTable)
-        await updateHistory(toHistoryTable)
+
+        let historyTableURL = baseURL + `/score-histories`
+        let historyRes = await axios.post(historyTableURL, toHistoryTable)
 
         let toStudentTable = {
           scores: parseInt(this.state.student[0].scores) + 5,
@@ -82,8 +87,7 @@ export default new Vuex.Store({
         commit('updateScoreAndReward', studentRes)
       },
       async updateHistory(toHistoryTable) {
-        let historyTableURL = baseURL + `/score-histories`
-        let historyRes = await axios.post(historyTableURL, toHistoryTable)
+
       }
   },
   modules: {

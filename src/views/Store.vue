@@ -4,97 +4,94 @@
       <div class="content_wrapper">
         <Sidebar page="Store"></Sidebar>
         <div class="content_pad">
+            <div v-if="role === 'Authenticated'" class="container text-center my-10">
+                <p class="bg-yellow-400 px-5 py-3 w-50 text-2xl shadow-sm font-medium tracking-wider border text-yellow-100 rounded-full hover:shadow-lg hover:bg-yellow-500">points คงเหลือของคุณ: {{ student[0].reward_points }}</p>
+            </div>
 
             <!-- ของ role admin -->
-            <b-modal id="modal-sm" size="sm" title="Delete">Are you sure to delete it?!</b-modal>
-            <b-modal id="modal-lg" size="lg" title="Edit">
-                <form action="">
-                    <img style="float:left; width:225px; margin-right:20px; background-color:#B92D2D;" src="../../public/image/storeItems/item2.png">
-                    <span>Name</span>
-                    <input placeholder="Type text..." type="text">
-                    <span>Point value</span>
-                    <input placeholder="Type number..." type="number">
-                    <span>Quantity</span>
-                    <input placeholder="Type number..." type="number">
-                    <span>Details</span>
-                    <textarea name="details" id="details" placeholder="Type something..."></textarea>
-                </form>
-            </b-modal>
-            <!-------------------->
-
-            <div class="item_wrapper">
-                <button class="buy_button">Buy</button>
-
-                <!-- ของ role admin -->
-                <b-button class="delete_button" v-b-modal.modal-sm variant="primary">X</b-button>
-                <!-------------------->
-
-                <img class="item_img" src="../../public/image/storeItems/item2.png">
-                <span id="detail">1st in leader board</span>
-                
-                <!-- ของ role admin -->
-                <b-button class="edit_button" v-b-modal.modal-lg variant="primary"></b-button>
-                <!-------------------->
-
-                <br>
-                <span id="price">1000 Points</span>
-                <span id="quantity">10 pieces</span>
-            <p>points คงเหลือ {{ student[0].reward_points }}</p>
-            <div v-for="(reward, index) in rewards" :key="index">
-                <div class="item_wrapper">
-                    <button @click="redeemReward(student[0].reward_points, index)">Buy</button>
-                    <img src="../../public/image/storeItems/item2.png">
-                    <span id="detail">{{ reward.reward_name }}</span>
-                    <p>{{ reward.detail }}</p>
-                    <br>
-                    <span id="price">{{ reward.redeem_points || 0}} points</span>
-                    <!-- <span id="price">{{`${rewards[0].redeem_points}`}} Points</span> -->
+            <div v-if="role === 'Admin'">
+                <!-- ADD REWARD -->
+                <div class="container text-center my-10">
+                <button @click="showAddModal" class="w-52 bg-blue-500 px-4 py-3 rounded text-gray-200 font-semibold hover:bg-blue-600 transition duration-200 each-in-out">เพิ่มของรางวัลใหม่</button>
                 </div>
-            </div>
+                <div v-if="isAddModalOpen">
+                    <div id='edit-reward' class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <!-- Modal Background -- -->
+                        <div class="fixed text-gray-500 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-25 left-0 right-0 top-0 bottom-0">
+                            <!-- Modal -->
+                            <div class="bg-white rounded-xl shadow-2xl p-6 sm:w-10/12 mx-10" > 
+                                <!-- Title -->
+                                <div>Add New Reward</div>
+                                <div class='container'>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Reward Name
+                                        </label>
+                                        <input
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="text"
+                                            placeholder="Reward Name"
+                                            v-model="rewardForm.reward_name"
+                                        />
+                                    </div>
 
-             <div class="item_wrapper">
-                <button class="buy_button">Buy</button>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Detail
+                                        </label>
+                                        <textarea
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="text"
+                                            placeholder="รายละเอียด"
+                                            v-model="rewardForm.detail"
+                                        />
+                                    </div>
 
-                <!-- ของ role admin -->                
-                <b-button class="delete_button" v-b-modal.modal-sm variant="primary">X</b-button>
-                <!-------------------->
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Point Spent
+                                        </label>
+                                        <input
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="number"
+                                            placeholder="แต้มที่ใช้แลก"
+                                            v-model="rewardForm.point_spent"
+                                        />
+                                    </div>
 
-                <img class="item_img" src="../../public/image/storeItems/item3.png">
-                <span id="detail">2nd in leader board</span>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Stocks
+                                        </label>
+                                        <input
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="text"
+                                            placeholder="จำนวนคงเหลือ"
+                                            v-model="rewardForm.stocks"
+                                        />
+                                    </div>
 
-                <!-- ของ role admin -->
-                <b-button class="edit_button" v-b-modal.modal-lg variant="primary"></b-button>
-                <!-------------------->
-                
-                <br>
-                <span id="price">750 Points</span>
-                <span id="quantity">10 pieces</span>
-            </div>
-            
-            <div class="item_wrapper">
-                <button class="buy_button">Buy</button>
+                                    <div>
+                                    <label class="button" for="upload">
+                                            <img src="../../public/image/icon/add_task_ico.png">
+                                            Upload File
+                                    </label>
+                                        <input id="upload" type="file" name="files" @change="onFileChange">
+                                    </div>
 
-                <!-- ของ role admin -->
-                <b-button class="delete_button" v-b-modal.modal-sm variant="primary">X</b-button>
-                <!-------------------->
-
-                <img class="item_img" src="../../public/image/storeItems/item4.png">
-                <span id="detail">3rd in leader board</span>
-
-                <!-- ของ role admin -->
-                <b-button class="edit_button" v-b-modal.modal-lg variant="primary"></b-button>
-                <!-------------------->
-
-                <br>
-                <span id="price">500 Points</span>
-                <span id="quantity">10 pieces</span>
-            </div>
-
-            <!-- ของ role admin -->
-            <div>
-                <b-button class="add_task" v-b-modal.modal-xl variant="primary"><img src="../../public/image/icon/add_task_ico.png">Add somthing task to your class</b-button>
-                <b-modal id="modal-xl" size="xl" title="Add task">
+                                </div>
+                                <div class="text-right space-x-5 mt-5">
+                                    <button @click="showAddModal" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Cancel</button>
+                                    <button @click="addReward" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">บันทึก</button>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <b-modal id="modal-sm" size="sm" title="Delete">Are you sure to delete it?!</b-modal>
+                <b-modal id="modal-lg" size="lg" title="Edit">
                     <form action="">
+                        <img style="float:left; width:225px; margin-right:20px; background-color:#B92D2D;" src="../../public/image/storeItems/item2.png">
                         <span>Name</span>
                         <input placeholder="Type text..." type="text">
                         <span>Point value</span>
@@ -104,13 +101,140 @@
                         <span>Details</span>
                         <textarea name="details" id="details" placeholder="Type something..."></textarea>
                     </form>
-                    </b-modal>
-            </div>
-            <!-------------------->
+                </b-modal>
 
+                <div v-for="(reward, index) in rewards" :key="index">
+                    <div class="container bg-white space my-10 rounded-xl">
+                        <div class="flex items-center space-">
+                            <div class="flex">
+                                <img class="w-44 h-44" :src="openPic(reward)">
+                            </div>
+                            <div class="mx-24 flex-1 ">
+                                <p class="text-4xl font-bold" id="detail">{{ reward.reward_name }}</p>
+                                <div>
+                                    <p class="text-xl">{{ reward.detail }}</p>
+                                </div>
+                                <div>
+                                    <span id="price">{{ reward.redeem_points || 0}} points</span>
+                                    <span id="price">{{` Stocks: ${reward.stocks}`}}</span>
+                                    
+                                </div>
+                            </div>
+                            <div class="flex mx-auto">
+                                <div>
+                                <button v-if="role === 'Authenticated'" class="w-40 h-20 bg-green-600 text-white text-2xl px-6 py-2 rounded-xl font-medium mx-3 hover:bg-green-700 transition duration-200 each-in-out">Get this!</button>
+
+                                </div>
+                                <div>
+                                <button v-if="role === 'Admin'" @click="showEditModal(reward, index)" class="w-40 h-20 bg-green-600 text-white text-2xl px-6 py-2 rounded-xl font-medium mx-3 hover:bg-green-700 transition duration-200 each-in-out">Edit</button>
+
+                                </div>
+                                <div>
+
+                                <button v-if="role === 'Admin'" @click="removeReward(reward, index)" class="w-40 h-20 bg-red-600 text-white text-2xl px-6 py-2 rounded-xl font-medium mx-3 hover:bg-red-700 transition duration-200 each-in-out">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EDIT REWARD -->
+                <div v-if="isEditModalOpen">
+                    <div id='edit-reward' class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <!-- Modal Background -- -->
+                        <div class="fixed text-gray-500 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-25 left-0 right-0 top-0 bottom-0">
+                            <!-- Modal -->
+                            <div class="bg-white rounded-xl shadow-2xl p-6 sm:w-10/12 mx-10" > 
+                                <!-- Title -->
+                                <div>Edit Reward</div>
+                                <div class='container'>
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Reward Name
+                                        </label>
+                                        <input
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="text"
+                                            placeholder="Reward Name"
+                                            v-model="rewardForm.reward_name"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Detail
+                                        </label>
+                                        <textarea
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="text"
+                                            placeholder="รายละเอียด"
+                                            v-model="rewardForm.detail"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Point Spent
+                                        </label>
+                                        <input
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="number"
+                                            placeholder="แต้มที่ใช้แลก"
+                                            v-model="rewardForm.point_spent"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
+                                            Stocks
+                                        </label>
+                                        <input
+                                            class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            type="text"
+                                            placeholder="จำนวนคงเหลือ"
+                                            v-model="rewardForm.stocks"
+                                        />
+                                    </div>
+
+                                </div>
+                                <div class="text-right space-x-5 mt-5">
+                                    <button @click="showEditModal" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Cancel</button>
+                                    <button @click="submitrewardForm" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">บันทึก</button>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            <div v-if="role === 'Authenticated'">
+                <div v-for="(reward, index) in rewards" :key="index">
+                    <div class="container bg-white space my-10 rounded-xl">
+                        <div class="flex items-center justify-center">
+                            <div class="flex"> 
+                                <img class="w-44 h-44" :src="openPic(reward)">
+                            </div>
+                            <div class="flex-1 mx-16">
+                                <p class="text-4xl font-bold" id="detail">{{ reward.reward_name }}</p>
+                                <div>
+                                    <p class="text-xl">{{ reward.detail }}</p>
+                                </div>
+                            <div>
+                                <span id="price">{{ reward.redeem_points || 0}} points</span>
+                                <span id="price">{{`${rewards[0].redeem_points}`}} Points</span>
+                            </div>
+                            </div>
+                            <div class="flex">
+                                <div>
+                                    <button v-if="role === 'Authenticated'" @click="redeemReward(student[0].reward_points, index)" class="w-40 h-20 bg-green-600 text-white text-2xl px-6 py-2 rounded-xl font-medium mx-3 hover:bg-green-700 transition duration-200 each-in-out">Get this!</button>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
         </div>
-      </div>
-  </div>
 </template>
 
 <script>
@@ -119,6 +243,7 @@ import Sidebar from '@/components/Sidebar'
 import StudentStore from '@/store/StudentStore'
 import RedeemStore from '@/store/RedeemStore'
 import AuthUser from '@/store/AuthUser'
+import AddReward from '@/components/AddReward'
 
 export default {
     data() {
@@ -129,36 +254,46 @@ export default {
                 lastname: '',
                 scores: 0,
                 reward_points: 0,
-                // rewards: [{
-                //     reward_id: '',
-                //     reward_name: '',
-                //     redeem_points: 0,
-                //     detail: ''
-                // }]
             }],
             rewards: [{
                 reward_id: '',
                 reward_name: '',
                 redeem_points: 0,
                 detail: ''
-            }]
+            }],
+            role: '',
+            isEditModalOpen: false,
+            isAddModalOpen: false,
+            rewardForm: {
+                index: '',
+                id: '',
+                reward_name: '',
+                detail: '',
+                point_spent: '',
+                stocks: ''
+            },
+            file: ''
         }
     },
-    created() {
-        this.fetchData()
+    async created() {
+        await this.fetchData()
     },
     methods: {
         async fetchData() {
-            let studentLogin = AuthUser.getters.getStudentInfo
-            await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
-            let student = StudentStore.getters.getStudent
-            this.student = student
-            console.log(this.student)
-
+            let role = AuthUser.getters.getRole
+            this.role = role
+            console.log(this.role)
             await RedeemStore.dispatch('fetchRewards')
             let rewards = RedeemStore.getters.getRewards
             this.rewards = rewards
-            this.student.rewards = rewards
+            console.log(this.rewards)
+            if(role === 'Authenticated') {
+                let studentLogin = AuthUser.getters.getStudentInfo
+                await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
+                let student = StudentStore.getters.getStudent
+                this.student = student
+                this.student.rewards = rewards
+            }
         },
         async redeemReward(std_points, redeem_id) {
             if (std_points >= 0) {
@@ -172,26 +307,91 @@ export default {
                         id: this.student[0].id,
                         scores: this.student[0].scores,
                         reward_points: this.student[0].reward_points,
-                        redeem_point: redeem_point
+                        redeem_point: redeem_point,
+                        redeem_id: this.rewards[redeem_id].id
                     }
-
+                    console.log('ready to get item')
                     await this.updateReward(redeem_id)
                     await StudentStore.dispatch('updateStudent', payload_std)
                 }
             }
         },
         async updateReward(redeem_id) {
-            // console.log("number "+redeem_id+1);
             let payload_reward = {
                 id: redeem_id + 1,
                 std_id: this.student[0].id
             }
             await RedeemStore.dispatch('updateRewards', payload_reward)
+        },
+        showEditModal(reward, index) {
+            this.rewardForm.index = index
+            this.rewardForm.id = reward.id
+            this.rewardForm.reward_name = reward.reward_name
+            this.rewardForm.detail = reward.detail
+            this.rewardForm.point_spent = reward.redeem_points
+            this.rewardForm.stocks = reward.stocks
+            this.isEditModalOpen = !this.isEditModalOpen
+        },
+        async submitrewardForm() {
+            let payload = {
+                index: this.rewardForm.index,
+                id: this.rewardForm.id,
+                reward_name: this.rewardForm.reward_name,
+                redeem_points: this.rewardForm.point_spent,
+                detail: this.rewardForm.detail,
+                stocks: this.rewardForm.stocks
+            }
+
+            await RedeemStore.dispatch('editReward', payload)
+            this.isEditModalOpen = !this.isEditModalOpen
+            this.clearForm()
+        },
+        clearForm() {
+            this.rewardForm = {
+                index: '',
+                id: '',
+                reward_name: '',
+                detail: '',
+                point_spent: '',
+                stocks: '2'
+            }
+        },
+        async removeReward(reward, index) {
+            let payload = {
+                index: index,
+                id: reward.id
+            }
+
+            await RedeemStore.dispatch('removeReward', payload)
+        },
+        showAddModal() {
+            this.isAddModalOpen = !this.isAddModalOpen
+        },
+        onFileChange(event) {
+            this.file = event.target.files[0]
+            console.log(this.file)
+        },
+        async addReward() {
+            const formData = new FormData()
+            formData.append('files', this.file)
+            formData.append('ref', 'reward')
+            formData.append('field', 'picture')
+            let payload = {
+                newReward: this.rewardForm,
+                formData: formData
+            }
+            await RedeemStore.dispatch('addReward', payload)
+            this.isAddModalOpen = !this.isAddModalOpen
+        },
+        openPic(reward){
+            // console.log(reward)
+            return `${process.env.VUE_APP_API_ENDPOINT}${reward.picture.url}`
         }
     },
     components:{
         Header,
-        Sidebar
+        Sidebar,
+        AddReward
     }
 }
 </script>
