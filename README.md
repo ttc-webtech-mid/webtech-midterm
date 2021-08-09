@@ -1,20 +1,33 @@
-# webtech-midterm
-
-## Project setup
+# Kanbong Kanban
+## ขั้นตอนการติดตั้งโปรเจค
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
+## Detail
 
-### Compiles and minifies for production
-```
-npm run build
-```
+รายละเอียดของผู้ใช้งานมีการแบ่งเป็น 3 Role โดยแต่ละ Role มีรายละเอียดดังนี้
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-# webtech-midterm
+### Admin
+
+- สามารถดู Leaderboard ที่เรียงคะแนนจากมากไปน้อย, คะแนนจากน้อยไปมาก และเลือกดูจากเวลาที่กำหนดได้
+
+- ทำการแก้ไขหรือเปลี่ยนแปลงของรางวัลในระบบได้
+
+- กำหนดจำนวนของรางวัลได้
+
+### Teacher
+
+- สามารถ assign task ในรายวิชาที่สอน
+
+- มีหน้าแสดงรายละเอียด task ที่ student turned in เข้ามาในระบบ
+
+### Student
+
+- มีหน้า profile ที่แสดงชื่อ, อีเมล, reward และ class
+
+- ดู leaderboard คะแนนรวมของแต่ละคนได้
+
+- การ submit การบ้าน หรือ task จะได้รับคะแนน และแต้มสำหรับแลกของรางวัล
+
+- สามารถใช้แต้ม (Reward point) แลกของรางวัลใน Store ได้
