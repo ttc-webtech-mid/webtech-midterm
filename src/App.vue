@@ -5,20 +5,15 @@
 </template>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  width: 100%;
-  min-height: 100vh;
+  font-family: Avenir, Helvetica, Arial, Kanit, sans-serif;
+  background-color: #EAEAEA;
 }
 body{
     margin: 0px;
   }
 #nav {
-  // padding: 30px;
-  
-
   a {
     font-weight: bold;
     color: #2c3e50;
