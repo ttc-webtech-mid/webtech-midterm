@@ -4,7 +4,7 @@
       <div class="content_wrapper">
         <Sidebar page="Profile"></Sidebar>
         <div class="content_pad">
-            <div class="profile_wrapper">
+            <div v-if="role === 'Authenticated'" class="profile_wrapper">
                 <div class="top_wrapper">
                     <div class="profile_img">
                         <img src="../../public/image/icon/profile_ico.png">
@@ -49,6 +49,32 @@
                     </div>
                 </div>
             </div>
+
+            <div v-if="role === 'Teacher'" class="profile_wrapper">
+                <div class="top_wrapper">
+                    <div class="profile_img">
+                        <img src="../../public/image/icon/profile_ico.png">
+                    </div>
+                    <div class="top_detail_wrapper">
+                        <span id="username">User: {{ `${teacher[0].firstname} ${teacher[0].lastname}` }}</span>
+                        <br>
+                        <span id="email">{{ teacher[0].teacher_email }}</span>
+                    </div>
+                </div>
+                <div class="bottom_wrapper">
+                    <div class="right_detail_wrapper">
+                        <span id="classes">Classes</span>
+                        <div class="classes_pad">
+                            <div v-for="(course, index) in courses" :key="index">
+                                <div class="class">
+                                    <img src="../../public/image/science_sbj.png">
+                                    <span>{{ course.course_name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
   </div>
@@ -61,6 +87,7 @@ import StudentStore from '@/store/StudentStore'
 import RedeemStore from '@/store/RedeemStore'
 import AuthUser from '@/store/AuthUser'
 import History from '@/components/History'
+import TeacherStore from '@/store/TeacherStore'
 
 // isLoading
 export default {
@@ -89,7 +116,9 @@ export default {
                 rewards_detail: ''
             }],
             rewards: [],
-            courses: []
+            courses: [],
+            teacher: [],
+            role: ''
         }
     },
     created() {
@@ -97,17 +126,22 @@ export default {
     },
     methods: {
         async fetchData() {
-            let studentLogin = AuthUser.getters.getStudentInfo
-            await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
-            await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
-            await RedeemStore.dispatch('fetchRewards')
-            this.student = StudentStore.getters.getStudent
-            console.log(this.student)
-            this.courses = StudentStore.getters.getCourses
-            this.rewards = RedeemStore.getters.getRewards
-            this.rewards_detail = RedeemStore.getters.getRewards
-            // console.log("re "+this.rewards[0].students);
-            // console.log("st "+this.student[0].firstname);
+            this.role = AuthUser.getters.getRole
+            if (this.role === AuthUser.getters.getRole) {
+                this.teacher.push (AuthUser.getters.user.teacher)
+                await TeacherStore.dispatch('fetchCourses', this.teacher[0].id)
+                this.courses = TeacherStore.getters.getCourses
+            }else {
+                let studentLogin = AuthUser.getters.getStudentInfo
+                await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
+                await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
+                await RedeemStore.dispatch('fetchRewards')
+                this.student = StudentStore.getters.getStudent
+                console.log(this.student)
+                this.courses = StudentStore.getters.getCourses
+                this.rewards = RedeemStore.getters.getRewards
+                this.rewards_detail = RedeemStore.getters.getRewards
+            }
         },
         openHistory() {
             this.$refs.modal.openModal()

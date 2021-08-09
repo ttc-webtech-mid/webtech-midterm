@@ -1,5 +1,7 @@
 <template>
   <div class="content_pad">
+            <!-- in DB, it's authenticated role. Change to Student! -->
+      <div v-if="role === 'Authenticated'">
       <div v-for="(course, index) in courses" :key="index">
             <a :href="'/class/' + course.course_id">
                 <div class="top_button">
@@ -7,22 +9,44 @@
                     <span id="subject">{{ course.course_name }}</span>
                 </div>
                 <div class="bottom_button">
-                    <span id="teacher_name">{{ `${ course.teachers[0].firstname || "noname"} ${ course.teachers[0].lastname || "noname"}` }}</span>
-                    <span id="teacher_email">{{ `${ course.teachers[0].teacher_email }` }}</span>
+                    <div v-for="(teacher, idx) in course.teachers" :key="idx">
+                        <span id="teacher_name">{{ `${ teacher.firstname || "noname"} ${ teacher.lastname || "noname"}` }}</span>
+                        <span id="teacher_email">{{ `${ teacher.teacher_email }` }}</span>
+                    </div>
                 </div>
             </a>
       </div>
+      </div>
+
+      <div v-if="role === 'Teacher'">
+      <div v-for="(course, index) in courses" :key="index">
+            <a :href="'/class/' + course.course_id">
+                <div class="top_button">
+                    <img src="../../public/image/cal_sbj.png">
+                    <span id="subject">{{ course.course_name }}</span>
+                </div>
+                <div class="bottom_button">
+                    <div v-for="(teacher, idx) in course.teachers" :key="idx">
+                        <span id="teacher_name">{{ `${ teacher.firstname || "noname"} ${ teacher.lastname || "noname"}` }}</span>
+                        <span id="teacher_email">{{ `${ teacher.teacher_email }` }}</span>
+                    </div>
+                </div>
+            </a>
+      </div>
+      </div>      
     </div>
 </template>
 
 <script>
 import StudentStore from '@/store/StudentStore'
 import AuthUser from '@/store/AuthUser'
+import TeacherStore from '@/store/TeacherStore'
 
 export default {
     data() {
         return {
-            courses: []
+            courses: [],
+            role: ""
         }
     },
     created() {
@@ -30,11 +54,19 @@ export default {
     },
     methods: {
         async fetchData() {
-            let studentLogin = AuthUser.getters.getStudentInfo
-            await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
-            let courses = StudentStore.getters.getCourses
-            this.courses = courses
-            console.log(this.courses)
+            let role = AuthUser.getters.getRole
+            this.role = role
+            if (role === "Teacher") {
+                let { teacher } = AuthUser.getters.user // change this to every student page!
+                await TeacherStore.dispatch('fetchCourses', teacher.id)
+                this.courses = TeacherStore.getters.getCourses
+            } else {
+                let studentLogin = AuthUser.getters.getStudentInfo
+                await StudentStore.dispatch('fetchCourses', studentLogin.std_id)
+                let courses = StudentStore.getters.getCourses
+                this.courses = courses
+                console.log(this.courses)
+            }
         }
     }
 }

@@ -11,7 +11,8 @@ const initialState = {
     user: auth ? auth.user : "",
     jwt: auth ? auth.jwt : "",
     isAuthen: auth ? true : false,
-    student: auth ? auth.user.student : "" 
+    student: auth ? auth.user.student : "" , // just user.student will be fine!
+    role: auth ? auth.user.role.name : ""
 }
 
 export default new Vuex.Store({
@@ -20,19 +21,23 @@ export default new Vuex.Store({
         user: (state) => state.user,
         jwt: (state) => state.jwt,
         isAuthen: (state) => state.isAuthen,
-        getStudentInfo: (state) => state.student
+        getStudentInfo: (state) => state.student,
+        getRole: (state) => state.role
     },
     mutations: {
         loginSuccess(state, username, jwt) {
-            state.username = username
+            state.user = username
             state.jwt = jwt
             state.isAuthen = true
             state.student = username.student
+            state.role = username.role.name
         },
         logoutSuccess (state) {
             state.user = ""
             state.jwt = ""
             state.isAuthen = false
+            state.student = "",
+            state.role = ""
         }
     },
     actions: {

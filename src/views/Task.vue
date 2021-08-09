@@ -9,7 +9,7 @@
                     <img src="../../public/image/icon/task_ico.png">
                     <div class="head_text">
                         <span id="heading">{{ task.topic }}</span>
-                        <span id="date">{{ task.created_at }}</span>
+                        <span id="date">Assign time: {{ convertDate(task.created_at) }}</span>
                     </div>
                 </div>
                 <div class="task_wrapper">
@@ -22,13 +22,13 @@
                 </div>
 
                 <!-- ของ role ที่เป็นนิสิต -->
-                <div class="submit_wrapper">
+                <div v-if="role === 'Authenticated'" class="submit_wrapper">
                     <div class="submit_top_wrapper">
                         <span id="your_work">Your work</span>
                         <div>Assigned</div>
                         <!-- <div href="" style="background: #2BB863">Turned in</div> -->
                         <br>
-                        <span id="due">Due: {{ task.due_date }}</span>
+                        <span id="due">Due: {{ convertDate(task.due_date) }}</span>
                     </div>
                     <form @submit.prevent="upload" ref="uploadForm">
                     <div class="submit_bottom_wrapper">
@@ -69,32 +69,30 @@
                 </div>
 
                 <!-- ของ role ที่เป็นอาจารย์ -->
-                <!-- <div class="submit_wrapper">
+                <div v-if="role === 'Teacher'" class="submit_wrapper">
                     <div class="submit_top_wrapper">
                         <span id="your_work">Turned in list</span>
-                        
                         <br>
-                        <span id="due">Due: 00/00/0000</span>
+                        <span id="due">Due: {{ convertDate(task.due_date) }}</span>
                     </div>
                     <div class="submit_bottom_wrapper">
-                        <div class="work_pad">
-                            <a href="">
-                                <span id="special_text">&#8226;</span>
-                                <span>6210450016's work</span>
-                            </a>
-                            <a href="">
-                                <span id="special_text">&#8226;</span>
-                                <span>6210400710's work</span>
-                            </a>
-                            <a href="">
-                                <span id="special_text">&#8226;</span>
-                                <span>6210401252's work</span>
-                            </a>
+                        <div v-if="turnedIn.length > 0" class="work_pad">
+                            <div v-for="(std, index) in turnedIn" :key="index">
+                                <h2>{{ `${std.student.std_id} ${std.student.firstname} ${std.student.lastname}`}}</h2>
+                                <div v-for="(task, id) in std.assignment.files" :key="id">
+                                    <a :href="openTask(task.url)" target="_blank">
+                                        <span id="special_text">&#8226;</span>
+                                        <span>{{ `${task.name}` }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <div v-if="turnedIn.length === 0" class="work_pad">
+                            ไม่มีใครส่ง
                         </div> 
                     </div>
-                </div> -->
-
-
+                </div>
             </div>
         </div>
       </div>
@@ -106,6 +104,7 @@ import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import AssignmentStore from "@/store/AssignmentStore"
 import StudentStore from "@/store/StudentStore"
+import AuthUser from '@/store/AuthUser'
 
 export default {
 
@@ -119,7 +118,9 @@ export default {
             task: [],
             files: [],
             isSubmit: false,
-            uploadedFiles: []
+            uploadedFiles: [],
+            role: "",
+            turnedIn: []
         }
     },
     created() {
@@ -127,13 +128,21 @@ export default {
     },
     methods: {
         async fetchData(){
-            await AssignmentStore.dispatch("fetchAssignmentById", this.task_id)
-            this.task = AssignmentStore.getters.getFilterAssignment[0]
-
-            AssignmentStore.dispatch("fetchUploadedFiles")
-            this.uploadedFiles = AssignmentStore.getters.getUploadedFiles[0]['files']
-            console.log(this.uploadedFiles)
-            console.log(this.task)
+            this.role = AuthUser.getters.getRole
+            let params = {
+                task_id: this.task_id,
+                role: this.role
+            }
+            await AssignmentStore.dispatch("fetchAssignmentById", params)
+            this.task = AssignmentStore.getters.getFilterAssignment[0]  
+            if(this.role === 'Teacher') {
+                this.turnedIn = AssignmentStore.getters.getTurnedIn
+                console.log(this.turnedIn)
+            }
+            else {
+                AssignmentStore.dispatch("fetchUploadedFiles")
+                this.uploadedFiles = AssignmentStore.getters.getUploadedFiles[0]['files']
+            }
         },
         onFileChange(event) {
             for(let file of event.target.files) {
@@ -154,7 +163,14 @@ export default {
         remove(idx) {
             this.files = this.files.filter((item, index) => index !== idx)
             console.log(this.files)
-        }
+        },
+        convertDate(createdAt) {
+            let date = new Date(createdAt)
+            let formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())
+            return formatDate.toLocaleString().replace(',', '')
+        },openTask(url) {
+            return process.env.VUE_APP_API_ENDPOINT + url
+        },
     }
 
 }

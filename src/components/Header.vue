@@ -7,7 +7,9 @@
             <div class="img_wrapper">
                 <img src="../../public/image/icon/profile_ico.png" >
             </div>
-            <span>{{ `${student[0].firstname} ${student[0].lastname}` }}</span>
+            <span v-if="student.firstname !== ''">{{ `${student[0].firstname} ${student[0].lastname}` }}</span>
+            <span v-if="admin.firstname !== ''">{{ `${admin[0].firstname} ${admin[0].lastname}` }}</span>
+            <span v-if="teacher.firstname !== ''">{{ `${teacher[0].firstname} ${teacher[0].lastname}` }}</span>
         </a>
  
     </div>
@@ -24,6 +26,14 @@ export default {
             student: [{
                 firstname: '',
                 lastname: ''
+            }],
+            teacher: [{
+                firstname: '',
+                lastname: ''
+            }],
+            admin: [{
+                firstname: '',
+                lastname: ''
             }]
         }
     },
@@ -32,10 +42,21 @@ export default {
     },
     methods: {
         async fetchData() {
-            let studentLogin = AuthUser.getters.getStudentInfo
-            await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
-            let student = StudentStore.getters.getStudent
-            this.student = student
+            let role = AuthUser.getters.getRole
+            console.log(role)
+            if (role === "Admin") {
+                let user = AuthUser.getters.user
+                this.admin[0] = user.admin_profile
+                console.log(this.admin)
+            }else if (role === "Teacher") {
+                let user = AuthUser.getters.user
+                this.teacher[0] = user.teacher
+            }else {
+                let studentLogin = AuthUser.getters.getStudentInfo
+                await StudentStore.dispatch('fetchStudent', studentLogin.std_id)
+                let student = StudentStore.getters.getStudent
+                this.student = student
+            }
         },
         isAuthen() {
         return AuthUser.getters.isAuthen

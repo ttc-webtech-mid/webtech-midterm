@@ -26,20 +26,22 @@
                 <span>Class</span>
               </a>
           </div> -->
-          
-          <div v-if="page==='Leader Board'">
-              <a class="selected_page" href="/leader_Board">
-                <img src="../../public/image/icon/leaderBoard_ico.png">
-                <span>Leader Board</span>
-              </a>
-          </div>
-          <div v-if="page!=='Leader Board'">
-              <a class="not_selected_page" href="/leader_Board">
-                <img src="../../public/image/icon/leaderBoard_ico.png">
-                <span>Leader Board</span>
-              </a>
+          <div v-if="role === 'Authenticated' || role === 'Admin'">
+            <div v-if="page==='Leader Board'">
+                <a class="selected_page" href="/leader_Board">
+                  <img src="../../public/image/icon/leaderBoard_ico.png">
+                  <span>Leader Board</span>
+                </a>
+            </div>
+            <div v-if="page!=='Leader Board'">
+                <a class="not_selected_page" href="/leader_Board">
+                  <img src="../../public/image/icon/leaderBoard_ico.png">
+                  <span>Leader Board</span>
+                </a>
+            </div>
           </div>
 
+          <div v-if="role === 'Authenticated' || role === 'Admin'">
           <div v-if="page==='Store'">
               <a class="selected_page" href="/store">
                 <img src="../../public/image/icon/store_ico.png">
@@ -51,6 +53,7 @@
                 <img src="../../public/image/icon/store_ico.png">
                 <span>Store</span>
               </a>
+          </div>
           </div>
           
           
@@ -87,8 +90,15 @@
 </template>
 
 <script>
+import AuthUser from '@/store/AuthUser'
+
 export default {
-    props:['page']
+    props:['page'],
+    data() {
+      return {
+        role: AuthUser.getters.getRole || ''
+      }
+    },
 }
 </script>
 
