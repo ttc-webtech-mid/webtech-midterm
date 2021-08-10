@@ -35,11 +35,11 @@
                         <div class="work_pad">
                                 <div v-if="uploadedFiles.length === 0">
                                     <div v-for="(file, index) in files" :key="index">
-                                            <a href="">
+                                            <a id="file" style="float:left;" href="">
                                                 <span id="special_text">&#8226;</span>
-                                                <span>{{ file.name }}</span>
+                                                <span >{{ file.name }}</span>
                                             </a>
-                                            <button @click="remove(index)"> x </button>
+                                            <button @click="remove(index)" style="display:inline-box; margin-left:1px;"> x </button>
                                     </div>
                                 </div>
                                 <div v-if="uploadedFiles.length > 0">
@@ -282,7 +282,7 @@ export default {
                 }
                 .submit_bottom_wrapper{
                     height: 418px;
-                    width: 500px;
+                    width: 300px;
                     margin: 0px auto;
                     border: 1px solid #000000;
                     border-radius: 10px;
@@ -294,8 +294,16 @@ export default {
                         overflow-x: hidden ;
                         #special_text{
                             float: left;
+                            // width: 100px;
                             display: block;
                             margin: 0px 8px 0px 7px;
+                        }
+                        #file{
+                            width: 150px;
+                            margin: 0px;
+                        }
+                        #file:hover{
+                            border: 1px solid #46729c;
                         }
                         input[type="file"] {
                             position: absolute;
@@ -306,7 +314,8 @@ export default {
                             color: #b8b8b8;
                         }
                         .button-wrap {
-                            position: relative;
+                            // position: relative;
+                            width: 120px;
                         }
                         .button {
                             display: inline-block;
@@ -331,7 +340,6 @@ export default {
                         a{
                             display: block;
                             color: #3C89CF;
-                            // width: 131px;
                             height: 25px;
                             margin-top: 10px;
                             img{

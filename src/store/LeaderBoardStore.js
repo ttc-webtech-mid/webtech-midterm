@@ -66,6 +66,7 @@ export default new Vuex.Store({
                   return prev
               }, {})
           }
+          
 
           let historyScores = Object.keys(sum).map(id => sum[id]).sort((prev, next) => next.points - prev.points)
           

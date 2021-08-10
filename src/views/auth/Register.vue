@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
       <div class="background_wrapper">
-          <p>KANBONG KANBAN</p>
+          <p style="height:260px;">KANBONG KANBAN</p>
       </div>
       <div class="register_wrapper">
           <form @submit.prevent="register">
@@ -15,6 +15,7 @@
               <br/>
               <div>
                 <button class="confirm_btn">Register</button>
+                <a class="confirm_btn" href="/">Cancel</a>
               </div>
               <!-- <div>
                 <a class="confirm_btn" href="/">Confirm</a>
@@ -42,7 +43,7 @@ export default {
     },
     methods: {
         async register() {
-            // let res = await AuthService.register(this.form)
+
             let res = await AuthUser.dispatch('register', this.form)
             if (res.success) {
                 this.$swal("Register success", ``, "success")
@@ -139,10 +140,9 @@ export default {
         }
         .confirm_btn,.cancel_btn{
             display: inline-block;
-            margin: 0px 10px;
-            margin-top: 5px;
+            margin: 10px 0px 0px 20px;
             padding: 10px 10px;
-            width: 65px;
+            width: 80px;
             text-decoration: none;
             color: #FFFFFF;
             background-color: #1E6380;
