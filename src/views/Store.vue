@@ -243,7 +243,6 @@ import Sidebar from '@/components/Sidebar'
 import StudentStore from '@/store/StudentStore'
 import RedeemStore from '@/store/RedeemStore'
 import AuthUser from '@/store/AuthUser'
-import AddReward from '@/components/AddReward'
 
 export default {
     data() {
@@ -391,7 +390,6 @@ export default {
     components:{
         Header,
         Sidebar,
-        AddReward
     }
 }
 </script>
