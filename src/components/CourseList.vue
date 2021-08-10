@@ -97,9 +97,9 @@ export default {
             border-radius: 15px 15px 0px 0px;
             display: flex;
             img{
-                margin: 55px 0px 0px 55px;
-                width: 320px;
-                height: 320px;
+                margin: 25px 0px 25px 25px;
+                width: 250px;
+                height: 250px;
                 border-radius: 100%;
             }
             #subject{
@@ -111,17 +111,18 @@ export default {
         .bottom_button{
             height: 50%;
             background-color: #fff;
+            padding-bottom: 20px;
             border-radius: 0px 0px 15px 15px;
             color: #000000;
             #teacher_name{
                 width: 590px;
                 display: inline-block;
-                margin: 55px 0px 0px 405px;
+                margin: 10px 0px 10px 307px;
                 font-size: 2.5rem;
             }
             #teacher_email{
                 display: block;
-                margin: 20px 0px 0px 413px;
+                margin: 10px 0px 0px 309px;
                 color: #787878;
             }
         }

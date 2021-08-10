@@ -218,10 +218,10 @@
                                 <div>
                                     <p class="text-xl">{{ reward.detail }}</p>
                                 </div>
-                            <div>
-                                <span id="price">{{ reward.redeem_points || 0}} points</span>
-                                <span id="price">{{`${rewards[0].redeem_points}`}} Points</span>
-                            </div>
+                                <div>
+                                    <span id="price" style="background-color:#AAEBFF;">{{ reward.redeem_points || 0}} points</span>
+                                    <span id="price" style="background-color:#3489a3; margin-left: 20px;">{{`${rewards[0].stocks}`}} Stocks</span>
+                                </div>
                             </div>
                             <div class="flex">
                                 <div>
@@ -296,22 +296,41 @@ export default {
         },
         async redeemReward(std_points, redeem_id) {
             if (std_points >= 0) {
+                  
                 let redeem_point = this.rewards[redeem_id].redeem_points
                 if (std_points >= redeem_point) {
-                    let std_points_balance = std_points - redeem_point
-                    console.log(std_points_balance);
-                    this.student[0].reward_points = std_points_balance
+                    swal({
+                        title: "Are you sure to purshase it?",
+                        text: "Press confirm button to purshase",
+                        // type: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    }). then((purshaseIt) => {
+                        if (purshaseIt) {
+                            let std_points_balance = std_points - redeem_point
+                            console.log(std_points_balance);
+                            this.student[0].reward_points = std_points_balance
 
-                    let payload_std = {
-                        id: this.student[0].id,
-                        scores: this.student[0].scores,
-                        reward_points: this.student[0].reward_points,
-                        redeem_point: redeem_point,
-                        redeem_id: this.rewards[redeem_id].id
-                    }
-                    console.log('ready to get item')
-                    await this.updateReward(redeem_id)
-                    await StudentStore.dispatch('updateStudent', payload_std)
+                            let payload_std = {
+                                id: this.student[0].id,
+                                scores: this.student[0].scores,
+                                reward_points: this.student[0].reward_points,
+                                redeem_point: redeem_point,
+                                redeem_id: this.rewards[redeem_id].id
+                            }
+                            console.log('ready to get item')
+                            
+                            this.updateReward(redeem_id)
+                            StudentStore.dispatch('updateStudent', payload_std)
+                            swal("Purshase complete!", {
+                            icon: "success",
+                            });
+                        } 
+                    });
+                    
+                }
+                else{
+                    this.$swal("Not enought Points", "Failed")
                 }
             }
         },
@@ -442,14 +461,7 @@ export default {
                 font-size: 2.5rem;
                 margin: 40px 0px 20px 20px;
             }
-            #price{
-                display: inline-block;
-                margin: 0px 0px 0px 24px;
-                font-size: 1.5rem;
-                background-color: #AAEBFF;
-                padding: 10px;
-                border-radius: 10px;
-            }
+            
             #quantity{
                 display: inline-block;
                 margin: 0px 0px 0px 24px;
@@ -475,7 +487,13 @@ export default {
       }
     }
 }
-
+#price{
+    display: inline-block;
+    margin: 0px 0px 0px 0px;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 10px;
+}
 .add_task{
     color: #3a8caf;
     text-decoration: none;

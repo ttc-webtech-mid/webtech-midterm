@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
       <div class="background_wrapper">
-          <p>KANBONG KANBAN</p>
+          <p style="height:260px;">KANBONG KANBAN</p>
       </div>
       <div class="login_wrapper">
           <form @submit.prevent="login">
@@ -74,7 +74,6 @@ export default {
     display: inline-block;
     overflow-x: hidden;
     p{
-        height: 180px;
         padding: 10px 0px;
         border-radius: 5%;
         display: inline-block;
