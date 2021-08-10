@@ -49,7 +49,8 @@ export default new Vuex.Store({
         beforeStudents.push(payload.std_id)
         let body = {
           id: payload.id,  
-          students: beforeStudents
+          students: beforeStudents,
+          stocks: parseInt(selectedReward.data.stocks) - 1
         }
 
         let headers = AuthUser.getApiHeader()

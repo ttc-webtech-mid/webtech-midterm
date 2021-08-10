@@ -30,6 +30,10 @@
                 </button>
               </div>
             </div>
+            <div>
+              <input id="time_search" v-model="searchDate" type="date" @change="dateChanged">
+              <span id="time_search" class="text-white">Search :</span>
+            </div>
             <div class="head_table">
               <div v-if="isClickedReceived === true">
                 <span id="header_table">POINTS EARNED</span>
@@ -37,8 +41,6 @@
               <div v-if="isClickedRedeem === true">
                 <span id="header_table">POINTS SPENT</span>
               </div>
-              <input id="time_search" type="date">
-              <span id="time_search">Search :</span>
             </div>
 
             <table>
@@ -47,6 +49,7 @@
                         <th id="rank_head">Rank</th>
                         <th id="name_head">Name</th>
                         <th id="points_head">Total Points</th>
+                        <th id="date_head">Total Points</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +57,7 @@
                         <td id="rank_body"> {{ index + 1 }} </td>
                         <td id="name_body"> {{ `${std.student.firstname} ${std.student.lastname}` }} </td>
                         <td id="points_body">{{ `${std.points}` }}</td>
+                        <td id="date_body">{{ convertDate(std.created_at) }}</td>
                     </tr>
                 </tbody>
             </table>  
@@ -83,6 +87,7 @@ export default {
         histories: [],
         isClickedReceived: true,
         isClickedRedeem: false,
+        searchDate: ''
       }
     },
     created() {
@@ -95,6 +100,7 @@ export default {
         if (this.role === 'Admin') {
           await LeaderBoardStore.dispatch('fetchHistory', 'receive')
           this.histories = LeaderBoardStore.getters.getHistories
+          console.log(this.histories)
         }
       },
         async receivedHistory() {
@@ -111,6 +117,22 @@ export default {
             this.isClickedReceived = !this.isClickedReceived
             this.isClickedRedeem = !this.isClickedRedeem
         },
+        async dateChanged() {
+          let sort
+          if(this.isClickedReceived) sort = 'receive'
+          if(this.isClickedRedeem) sort = 'redeem'
+          let payload = {
+            searchDate: this.searchDate,
+            cmd: sort
+          }
+          await LeaderBoardStore.dispatch('filterDate', payload)
+          this.histories = LeaderBoardStore.getters.getHistories
+          console.log(this.histories)
+        },
+        convertDate(createdAt) {
+            let date = new Date(createdAt)
+            return date.toLocaleDateString()
+        }
     }
 }
 </script>
@@ -196,6 +218,9 @@ export default {
             #name_head{
                 width: 700px;
             }
+            #date_head {
+              width: 150px
+            }
         }
         tbody{
             tr{
@@ -211,8 +236,11 @@ export default {
                 text-align:center;
             }
             #name_body{
-                
                 display: block;
+                margin:20px 20px;
+            }
+            #date_body{
+              display: block;
                 margin:20px 20px;
             }
         }

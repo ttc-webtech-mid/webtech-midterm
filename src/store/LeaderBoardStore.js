@@ -9,11 +9,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       students: [],
-      histories: []
+      histories: [],
   },
   getters: {
       getStudents: (state) => state.students,
-      getHistories: (state) => state.histories
+      getHistories: (state) => state.histories,
   },
   mutations: {
       setStudents(state, res) {
@@ -31,48 +31,94 @@ export default new Vuex.Store({
       },
     async fetchHistory({ commit }, sort) {
           let res = await axios.get(baseURL + '/score-histories')
-          let sum = {}
+          let histories = []
 
           if(sort === 'receive') {
-              let intData = res.data.map((item) => {
+               let receviedHistory = res.data.filter(item => item.points_received > 0)
+               histories = receviedHistory.map((item) => {
                   return {
                       id: item.id,
                       points: parseInt(item.points_received),
-                      student: item.student
+                      student: item.student,
+                      created_at: item.created_at
                   }
               })
-              sum = intData.reduce((prev, next) => {
-                  if (next.student.std_id in prev) {
-                      prev[next.student.std_id].points += next.points
-                  } else {
-                      prev[next.student.std_id] = next
-                  }
-                  return prev
-              }, {})
+            //   sum = intData.reduce((prev, next) => {
+            //       if (next.student.std_id in prev) {
+            //           prev[next.student.std_id].points += next.points
+            //       } else {
+            //           prev[next.student.std_id] = next
+            //       }
+            //       return prev
+            //   }, {})
+
           } else {
-              let intData = res.data.map((item) => {
+               let redeemHistory = res.data.filter(item => item.points_redeem > 0)
+               histories = redeemHistory.map((item) => {
                   return {
                       id: item.id,
                       points: parseInt(item.points_redeem),
-                      student: item.student
+                      student: item.student,
+                      created_at: item.created_at
                   }
               })
-              sum = intData.reduce((prev, next) => {
-                  if (next.student.std_id in prev) {
-                      prev[next.student.std_id].points += next.points
-                  } else {
-                      prev[next.student.std_id] = next
-                  }
-                  return prev
-              }, {})
+            //   sum = intData.reduce((prev, next) => {
+            //       if (next.student.std_id in prev) {
+            //           prev[next.student.std_id].points += next.points
+            //       } else {
+            //           prev[next.student.std_id] = next
+            //       }
+            //       return prev
+            //   }, {})
           }
           
 
-          let historyScores = Object.keys(sum).map(id => sum[id]).sort((prev, next) => next.points - prev.points)
+        //   let historyScores = Object.keys(sum).map(id => sum[id]).sort((prev, next) => next.points - prev.points)
           
-          console.log(historyScores)
-          commit('setHistories', historyScores)
+        //   console.log(historyScores)
+          commit('setHistories', histories)
       },
+      async filterDate({ commit }, { searchDate, cmd}) {
+          let res = await axios.get(baseURL + '/score-histories')
+          let filtered = []
+          let mapHistories = []
+          if(cmd === 'receive'){
+              let receviedHistory = res.data.filter(item => item.points_received > 0)
+              filtered = receviedHistory.filter(item => {
+                let date = new Date(item.created_at)
+                let search = new Date(searchDate)
+                if(date.toLocaleDateString() === search.toLocaleDateString()) {
+                    return item
+                }
+              })
+              mapHistories = filtered.map(elem => {
+              return {
+                  points: elem.points_received,
+                  student: elem.student,
+                  created_at: elem.created_at
+              }
+          })
+          } else {
+              let redeemHistory = res.data.filter(item => item.points_redeem > 0)
+              filtered = redeemHistory.filter(item => {
+                let date = new Date(item.created_at)
+                let search = new Date(searchDate)
+                if(date.toLocaleDateString() === search.toLocaleDateString()) {
+                    return item
+                }
+              })
+              mapHistories = filtered.map(elem => {
+              return {
+                  points: elem.points_redeem,
+                  student: elem.student,
+                  created_at: elem.created_at
+              }  
+          })
+        }
+
+          commit('setHistories', mapHistories)
+    }
+
   },
   modules: {
   }
