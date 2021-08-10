@@ -43,15 +43,6 @@ export default new Vuex.Store({
                       created_at: item.created_at
                   }
               })
-            //   sum = intData.reduce((prev, next) => {
-            //       if (next.student.std_id in prev) {
-            //           prev[next.student.std_id].points += next.points
-            //       } else {
-            //           prev[next.student.std_id] = next
-            //       }
-            //       return prev
-            //   }, {})
-
           } else {
                let redeemHistory = res.data.filter(item => item.points_redeem > 0)
                histories = redeemHistory.map((item) => {
@@ -62,20 +53,8 @@ export default new Vuex.Store({
                       created_at: item.created_at
                   }
               })
-            //   sum = intData.reduce((prev, next) => {
-            //       if (next.student.std_id in prev) {
-            //           prev[next.student.std_id].points += next.points
-            //       } else {
-            //           prev[next.student.std_id] = next
-            //       }
-            //       return prev
-            //   }, {})
           }
-          
 
-        //   let historyScores = Object.keys(sum).map(id => sum[id]).sort((prev, next) => next.points - prev.points)
-          
-        //   console.log(historyScores)
           commit('setHistories', histories)
       },
       async filterDate({ commit }, { searchDate, cmd}) {

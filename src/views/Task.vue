@@ -100,7 +100,7 @@
                         </div> 
 
                         <div v-if="turnedIn.length === 0" class="work_pad">
-                            ไม่มีใครส่ง
+                            There is no any work!
                         </div> 
                     </div>
                 </div>
